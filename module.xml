@@ -1,0 +1,179 @@
+<?xml version="1.0" ?>
+<module suppressWarnings="false">
+
+<User f="nodata">
+  <User f="noscroll">
+    <Select_User t="list" f="user nocertainty noannotation" l="Control"/>
+  </User>
+</User>
+
+<Start f="nodata">
+  <Main f="noscroll">
+    <Location/>
+    <Create_Bird t="button" l="Bird"/>
+  </Main>
+  <search/>
+  <Map>
+    <map t="map"/>
+  </Map>
+</Start>
+
+<Bird>
+  <Bird_Info>
+    <Band_Number>
+      <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
+    </Band_Number>
+    <Bird_Species>
+      <opts>
+        <opt>zebra finch</opt>
+        <opt>chestnut-crowned babbler</opt>
+        <opt>long-tailed finch</opt>
+        <opt>house sparrow</opt>
+        <opt>other</opt>
+      </opts>
+    </Bird_Species>
+    <timestamp/>
+    <author/>
+    <Location_Name f="readonly"/>
+    <gps/>
+    <Nest_ID/>
+    <Chick_ID/>
+    <Age>
+      <opts>
+        <opt>Pulli</opt>
+        <opt>Juvenile</opt>
+        <opt>Adult</opt>
+      </opts>
+    </Age>
+    <Sex>
+      <opts>
+        <opt>Male</opt>
+        <opt>Female</opt>
+        <opt>Unknown</opt>
+      </opts>
+    </Sex>
+    <How_Caught>
+      <opts>
+        <opt>Trap</opt>
+        <opt>Mist net</opt>
+        <opt>Nest</opt>
+      </opts>
+    </How_Caught>
+  </Bird_Info>
+  <Measurements>
+    <Tarsus_Length b="decimal"><desc>mm</desc></Tarsus_Length>
+    <Head_Length   b="decimal"><desc>mm</desc></Tarsus_Length>
+    <cols>
+      <Bill_Length b="decimal"><desc>mm</desc></Bill_Length>
+      <Bill_Height b="decimal"><desc>mm</desc></Bill_Height>
+      <Bill_Width  b="decimal"><desc>mm</desc></Bill_Width>
+    </cols>
+    <Wing_Length   b="decimal"><desc>mm</desc></Wing_Length>
+    <Tail_Length   b="decimal"><desc>mm</desc></Tail_Length>
+    <Mass          b="decimal"><desc>grams</desc></Mass>
+  </Measurements>
+  <Comments>
+    <ID_Pit_Tag/>
+    <Comments/>
+    <Attach_Photograph t="camera"/>
+  </Comments>
+</Bird>
+
+<logic><![CDATA[
+/******************************* RANGE CHECKING *******************************/
+  Map    RANGES          = new HashMap();
+  String DROPDOWN_REF    = "Bird/Bird_Info/Bird_Species";
+  List   FIELDS_TO_CHECK = new ArrayList();
+
+  FIELDS_TO_CHECK.add("Bird/Measurements/Tarsus_Length");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Head_Length");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Length");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Height");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Width");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Wing_Length");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Tail_Length");
+  FIELDS_TO_CHECK.add("Bird/Measurements/Mass");
+
+  for(String f : FIELDS_TO_CHECK) {
+    onFocusCallback = null;
+    onBlurCallback  = "validateOnBlur(\"" + f + "\")";
+    onFocus(f, onFocusCallback, onBlurCallback);
+  }
+
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+
+  setRange(String k1, String k2, Integer min, Integer max) {
+    key = makeKey(k1, k2);
+    val = makeVal(min, max);
+    RANGES.put(key, val);
+  }
+  getRange(k1, k2) {
+    key = makeKey(k1, k2);
+    return getRange(key);
+  }
+  getRange(key) {
+    val = RANGES.get(key);
+    if (val == null) {
+      Log.e("getRange", "Range not defined");
+      return makeVal(0, 0);
+    } else {
+      return val;
+    }
+  }
+  makeKey(String k1, String k2) {
+    List l = new ArrayList();
+    l.add(k1);
+    l.add(k2);
+    return l;
+  }
+  makeVal(Integer min, Integer max) {
+    List l = new ArrayList();
+    l.add(0, min);
+    l.add(1, max);
+    return l;
+  }
+  getMin(List range) {
+    return list.get(0);
+  }
+  getMax(List range) {
+    return list.get(1);
+  }
+  isInRange(String fieldRef) {
+    k1 = fieldRef;
+    k2 = getFieldValue(DROPDOWN_REF);
+
+    range = getRange(k1, k2);
+    min = getMin(range);
+    max = getMax(range);
+
+    val = getFieldValue(fieldRef);
+    val = Float.parseFloat(val);
+    if (val > max) return false;
+    if (val < min) return false;
+    return true;
+  }
+  validateOnBlur(String fieldRef) {
+    if (isInRange(fieldRef)) {
+      return;
+    }
+    showWarning("Validation Failed", "Value out of range");
+  }
+
+/****************************** LOCATION COPYING *******************************/
+  addOnEvent("Bird", "show", "copyLocationName()");
+
+  copyLocationName() {
+    src = "Start/Main/Location";
+    dst = "Bird/Bird_Info/Location_Name";
+    val = getFieldValue(src);
+    setFieldValue(dst, val);
+  }
+]]></logic>
+</module>
