@@ -9,7 +9,7 @@
 
 <Start f="nodata">
   <Main f="noscroll">
-    <Location/>
+    <Location_Name/>
     <Create_Bird t="button" l="Bird"/>
   </Main>
   <search/>
@@ -75,7 +75,9 @@
   <Comments>
     <ID_Pit_Tag/>
     <Comments/>
-    <Attach_Photograph t="camera"/>
+    <Attach_Photograph t="camera">
+      <desc>Take two pictures, one of head front, one of head side</desc>
+    </Attach_Photograph>
   </Comments>
 </Bird>
 
@@ -170,7 +172,7 @@
   addOnEvent("Bird", "show", "copyLocationName()");
 
   copyLocationName() {
-    src = "Start/Main/Location";
+    src = "Start/Main/Location_Name";
     dst = "Bird/Bird_Info/Location_Name";
     val = getFieldValue(src);
     setFieldValue(dst, val);
