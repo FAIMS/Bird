@@ -20,7 +20,7 @@
 
 <Bird>
   <Bird_Info>
-    <Band_Number>
+    <Band_Number f="id notnull">
       <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
     </Band_Number>
     <Bird_Species>
@@ -62,7 +62,7 @@
   </Bird_Info>
   <Measurements>
     <Tarsus_Length b="decimal"><desc>mm</desc></Tarsus_Length>
-    <Head_Length   b="decimal"><desc>mm</desc></Tarsus_Length>
+    <Head_Length   b="decimal"><desc>mm</desc></Head_Length>
     <cols>
       <Bill_Length b="decimal"><desc>mm</desc></Bill_Length>
       <Bill_Height b="decimal"><desc>mm</desc></Bill_Height>
@@ -101,15 +101,6 @@
     onBlurCallback  = "validateOnBlur(\"" + f + "\")";
     onFocus(f, onFocusCallback, onBlurCallback);
   }
-
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
 
   setRange(String k1, String k2, Integer min, Integer max) {
     key = makeKey(k1, k2);
@@ -167,6 +158,15 @@
     }
     showWarning("Validation Failed", "Value out of range");
   }
+
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
 
 /****************************** LOCATION COPYING *******************************/
   addOnEvent("Bird", "show", "copyLocationName()");
