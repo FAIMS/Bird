@@ -3,7 +3,7 @@
 
 <User f="nodata">
   <User f="noscroll">
-    <Select_User t="list" f="user nocertainty noannotation" l="Control"/>
+    <Select_User t="list" f="user nocertainty noannotation" l="Start"/>
   </User>
 </User>
 
@@ -85,6 +85,7 @@
 /******************************* RANGE CHECKING *******************************/
   Map    RANGES          = new HashMap();
   String DROPDOWN_REF    = "Bird/Bird_Info/Bird_Species";
+  List   DROPDOWN_VALS   = new ArrayList(); //[String: vocabid, String: vocabname]
   List   FIELDS_TO_CHECK = new ArrayList();
 
   FIELDS_TO_CHECK.add("Bird/Measurements/Tarsus_Length");
@@ -96,13 +97,26 @@
   FIELDS_TO_CHECK.add("Bird/Measurements/Tail_Length");
   FIELDS_TO_CHECK.add("Bird/Measurements/Mass");
 
-  for(String f : FIELDS_TO_CHECK) {
+  for (String f : FIELDS_TO_CHECK) {
     onFocusCallback = null;
     onBlurCallback  = "validateOnBlur(\"" + f + "\")";
+
     onFocus(f, onFocusCallback, onBlurCallback);
   }
 
   setRange(String k1, String k2, Integer min, Integer max) {
+    // Convert k2 from human-readable vocabname to vocabid
+    k2 = "{" + k2 + "}";
+    for (List val : DROPDOWN_VALS) {
+      String vocabId   = val.get(0);
+      String vocabName = val.get(1);
+
+      if (k2.equals(vocabName)) {
+        k2 = vocabId;
+        break;
+      }
+    }
+
     key = makeKey(k1, k2);
     val = makeVal(min, max);
     RANGES.put(key, val);
@@ -133,12 +147,20 @@
     return l;
   }
   getMin(List range) {
-    return list.get(0);
+    return range.get(0);
   }
   getMax(List range) {
-    return list.get(1);
+    return range.get(1);
+  }
+  isNullBirdSpecies() {
+    return isNull(getFieldValue(DROPDOWN_REF));
   }
   isInRange(String fieldRef) {
+    if (isNullBirdSpecies())
+      return true;
+    if (isNull(getFieldValue(fieldRef)))
+      return true;
+
     k1 = fieldRef;
     k2 = getFieldValue(DROPDOWN_REF);
 
@@ -159,14 +181,18 @@
     showWarning("Validation Failed", "Value out of range");
   }
 
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-  setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  setRanges() {
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+  }
+
+  fetchVocab("Bird Species", DROPDOWN_VALS, "setRanges()");
 
 /****************************** LOCATION COPYING *******************************/
   addOnEvent("Bird", "show", "copyLocationName()");
