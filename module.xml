@@ -145,7 +145,7 @@
     onFocus(f, onFocusCallback, onBlurCallback);
   }
 
-  setRange(String k1, String k2, Integer min, Integer max) {
+  setRange(String k1, String k2, Float min, Float max) {
     // Convert k2 from human-readable vocabname to vocabid
     k2 = "{" + k2 + "}";
     for (List val : DROPDOWN_VALS) {
@@ -181,7 +181,7 @@
     l.add(k2);
     return l;
   }
-  makeVal(Integer min, Integer max) {
+  makeVal(Float min, Float max) {
     List l = new ArrayList();
     l.add(0, min);
     l.add(1, max);
@@ -211,7 +211,7 @@
 
     val = getFieldValue(fieldRef);
     val = Float.parseFloat(val);
-    if (val > max) return false;
+    if (val > max) return false; // TODO: Make this robust for floating point numbers
     if (val < min) return false;
     return true;
   }
@@ -219,18 +219,41 @@
     if (isInRange(fieldRef)) {
       return;
     }
-    showWarning("Validation Failed", "Value out of range");
+
+    // Find the permitted values for the failing field
+    k1 = fieldRef;
+    k2 = getFieldValue(DROPDOWN_REF);
+    range = getRange(k1, k2);
+
+    // Get the human-readable name for the failing field
+    String arch16n = "";
+    arch16n = fieldRef.split("/")[2];
+    arch16n = "{" + arch16n + "}";
+
+    // Build a nice error message for the user
+    String msg = "";
+    msg += "Value out of range for the field '" + arch16n + "'. ";
+    msg += "Permitted values are in the interval " + range.toString() + ".";
+
+    // Inform user that dey dun goof'd
+    showWarning("Validation Failed", msg);
   }
 
   setRanges() {
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
-    setRange("Bird/Measurements/Tarsus_Length", "zebra_finch", 0, 42);
+    species = new ArrayList();
+    species.add("zebra_finch");
+    species.add("long-tailed_finch");
+    species.add("house_sparrow");
+
+    for (s : species) {
+      setRange("Bird/Measurements/Tarsus_Length", s,   6.0,  25.0);
+      setRange("Bird/Measurements/Head_Length",   s,  15.0,  40.0);
+      setRange("Bird/Measurements/Bill_Length",   s,   6.0,  16.0);
+      setRange("Bird/Measurements/Bill_Height",   s,   6.0,  10.0);
+      setRange("Bird/Measurements/Wing_Length",   s,  20.0,  90.0);
+      setRange("Bird/Measurements/Tail_Length",   s,  20.0, 130.0);
+      setRange("Bird/Measurements/Mass",          s,   6.0,  35.0);
+    }
   }
 
   fetchVocab("Bird Species", DROPDOWN_VALS, "setRanges()");
