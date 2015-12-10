@@ -109,7 +109,6 @@
     <cols>
       <Bill_Length b="decimal"><desc>mm</desc></Bill_Length>
       <Bill_Height b="decimal"><desc>mm</desc></Bill_Height>
-      <Bill_Width  b="decimal"><desc>mm</desc></Bill_Width>
     </cols>
     <Wing_Length   b="decimal"><desc>mm</desc></Wing_Length>
     <Tail_Length   b="decimal"><desc>mm</desc></Tail_Length>
@@ -135,7 +134,6 @@
   FIELDS_TO_CHECK.add("Bird/Measurements/Head_Length");
   FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Length");
   FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Height");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Width");
   FIELDS_TO_CHECK.add("Bird/Measurements/Wing_Length");
   FIELDS_TO_CHECK.add("Bird/Measurements/Tail_Length");
   FIELDS_TO_CHECK.add("Bird/Measurements/Mass");
