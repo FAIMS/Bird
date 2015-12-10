@@ -9,7 +9,12 @@
 
 <Start f="nodata">
   <Main f="noscroll">
-    <Location_Name/>
+    <Bird_Species t="dropdown">
+      <!--Needs to be populated manually-->
+    </Bird_Species>
+    <Location_Name t="dropdown">
+      <!--Needs to be populated manually-->
+    </Location_Name>
     <Create_Bird t="button" l="Bird"/>
   </Main>
   <search/>
@@ -34,31 +39,77 @@
     </Bird_Species>
     <timestamp/>
     <author/>
-    <Location_Name f="readonly"/>
+    <Location_Name>
+      <opts>
+        <opt>1</opt>
+        <opt>2</opt>
+        <opt>3</opt>
+        <opt>4</opt>
+      </opts>
+    </Location_Name>
     <gps/>
     <Nest_ID/>
     <Chick_ID/>
-    <Age>
+    <Age t="radio">
       <opts>
         <opt>Pulli</opt>
         <opt>Juvenile</opt>
         <opt>Adult</opt>
       </opts>
     </Age>
-    <Sex>
+    <Sex t="radio">
       <opts>
         <opt>Male</opt>
         <opt>Female</opt>
         <opt>Unknown</opt>
       </opts>
     </Sex>
-    <How_Caught>
+    <How_Caught t="radio">
       <opts>
         <opt>Trap</opt>
         <opt>Mist net</opt>
         <opt>Nest</opt>
       </opts>
     </How_Caught>
+    <Bill_Colour t="picture">
+      <opts>
+        <opt>
+          zebra finch
+          <opt>1</opt>
+          <opt>2</opt>
+          <opt>3</opt>
+          <opt>4</opt>
+        </opt>
+        <opt>
+          chestnut-crowned babbler
+          <opt>1</opt>
+          <opt>2</opt>
+          <opt>3</opt>
+          <opt>4</opt>
+        </opt>
+        <opt>
+          long-tailed finch
+          <opt>1</opt>
+          <opt>2</opt>
+          <opt>3</opt>
+          <opt>4</opt>
+        </opt>
+        <opt>
+          house sparrow
+          <opt>1</opt>
+          <opt>2</opt>
+          <opt>3</opt>
+          <opt>4</opt>
+        </opt>
+        <opt>
+          other
+          <opt>1</opt>
+          <opt>2</opt>
+          <opt>3</opt>
+          <opt>4</opt>
+        </opt>
+      </opts>
+    </Bill_Colour>
   </Bird_Info>
   <Measurements>
     <Tarsus_Length b="decimal"><desc>mm</desc></Tarsus_Length>
@@ -194,13 +245,42 @@
 
   fetchVocab("Bird Species", DROPDOWN_VALS, "setRanges()");
 
-/****************************** LOCATION COPYING *******************************/
-  addOnEvent("Bird", "show", "copyLocationName()");
+/************ /Start/Main/{Bird_Species,Location_Name} POPULATION *************/
+  makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
+  makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
+
+/****************************** LOCATION COPYING ******************************/
+  addOnEvent("Start", "show", "loadLocationName()");
+  addOnEvent("Bird",  "show", "copyLocationName()");
+
+  loadLocationName() {
+    src = "Start/Main/Location_Name";
+    setFieldValueFromLocalSettings(src, src);
+  }
 
   copyLocationName() {
     src = "Start/Main/Location_Name";
     dst = "Bird/Bird_Info/Location_Name";
     val = getFieldValue(src);
+
+    insertIntoLocalSettings(src, val);
+    setFieldValue(dst, val);
+  }
+/**************************** BIRD SPECIES COPYING ****************************/
+  addOnEvent("Start", "show", "loadBirdSpecies()");
+  addOnEvent("Bird",  "show", "copyBirdSpecies()");
+
+  loadBirdSpecies() {
+    src = "Start/Main/Bird_Species";
+    setFieldValueFromLocalSettings(src, src);
+  }
+
+  copyBirdSpecies() {
+    src  = "Start/Main/Bird_Species";
+    dst = "Bird/Bird_Info/Bird_Species";
+    val  = getFieldValue(src);
+
+    insertIntoLocalSettings(src, val);
     setFieldValue(dst, val);
   }
 ]]></logic>
