@@ -25,7 +25,7 @@
 
 <Bird>
   <Bird_Info>
-    <Band_Number f="id notnull">
+    <Band_Number f="id notnull nocertainty">
       <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
     </Band_Number>
     <Bird_Species>
@@ -40,23 +40,27 @@
     <author/>
     <Location_Name>
       <opts>
-        <opt>1</opt>
-        <opt>2</opt>
-        <opt>3</opt>
-        <opt>4</opt>
+        <opt>Gap Hills</opt>
+        <opt>Saloon</opt>
+        <opt>Sandstone</opt>
+        <opt>White tank</opt>
+        <opt>Old Aviary</opt>
+        <opt>New Aviary</opt>
+        <opt>W19G</opt>
+        <opt>W19F</opt>
       </opts>
     </Location_Name>
     <gps/>
-    <Nest_ID/>
-    <Chick_ID/>
-    <Age t="radio">
+    <Nest_ID f="nocertainty"/>
+    <Chick_ID f="nocertainty"/>
+    <Age t="radio" f="notnull">
       <opts>
         <opt>Pulli</opt>
         <opt>Juvenile</opt>
         <opt>Adult</opt>
       </opts>
     </Age>
-    <Sex t="radio">
+    <Sex t="radio" f="notnull nocertainty">
       <opts>
         <opt>Male</opt>
         <opt>Female</opt>
@@ -74,31 +78,29 @@
       <opts>
         <opt>
           zebra finch
-          <opt>1</opt>
-          <opt>2</opt>
-          <opt>3</opt>
-          <opt>4</opt>
+          <opt>yellow</opt>
+          <opt>yellow orange</opt>
+          <opt>orange</opt>
+          <opt>orange red</opt>
+          <opt>red</opt>
         </opt>
         <opt>
           long-tailed finch
-          <opt>1</opt>
-          <opt>2</opt>
-          <opt>3</opt>
-          <opt>4</opt>
+          <opt>yellow</opt>
+          <opt>yellow orange</opt>
+          <opt>orange</opt>
+          <opt>orange red</opt>
+          <opt>red</opt>
         </opt>
         <opt>
           house sparrow
-          <opt>1</opt>
-          <opt>2</opt>
-          <opt>3</opt>
-          <opt>4</opt>
+          <opt>yellow (with flange)</opt>
+          <opt>yellow</opt>
+          <opt>grey</opt>
+          <opt>black</opt>
         </opt>
         <opt>
           other
-          <opt>1</opt>
-          <opt>2</opt>
-          <opt>3</opt>
-          <opt>4</opt>
         </opt>
       </opts>
     </Bill_Colour>
@@ -115,8 +117,8 @@
     <Mass          b="decimal"><desc>grams</desc></Mass>
   </Measurements>
   <Comments>
-    <ID_Pit_Tag/>
-    <Comments/>
+    <ID_Pit_Tag f="notnull nocertainty"/>
+    <Comments f="notnull nocertainty"/>
     <Attach_Photograph t="camera">
       <desc>Take two pictures, one of head front, one of head side</desc>
     </Attach_Photograph>
@@ -125,27 +127,13 @@
 
 <logic><![CDATA[
 /******************************* RANGE CHECKING *******************************/
+  import java.math.BigDecimal;
+
   Map    RANGES          = new HashMap();
   String DROPDOWN_REF    = "Bird/Bird_Info/Bird_Species";
   List   DROPDOWN_VALS   = new ArrayList(); //[String: vocabid, String: vocabname]
-  List   FIELDS_TO_CHECK = new ArrayList();
 
-  FIELDS_TO_CHECK.add("Bird/Measurements/Tarsus_Length");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Head_Length");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Length");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Bill_Height");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Wing_Length");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Tail_Length");
-  FIELDS_TO_CHECK.add("Bird/Measurements/Mass");
-
-  for (String f : FIELDS_TO_CHECK) {
-    onFocusCallback = null;
-    onBlurCallback  = "validateOnBlur(\"" + f + "\")";
-
-    onFocus(f, onFocusCallback, onBlurCallback);
-  }
-
-  setRange(String k1, String k2, Float min, Float max) {
+  setRange(String k1, String k2, String min, String max) {
     // Convert k2 from human-readable vocabname to vocabid
     k2 = "{" + k2 + "}";
     for (List val : DROPDOWN_VALS) {
@@ -161,19 +149,18 @@
     key = makeKey(k1, k2);
     val = makeVal(min, max);
     RANGES.put(key, val);
+
+    // onFocus() binding to do validation on blur
+    onFocusCallback = null;
+    onBlurCallback  = "validateOnBlur(\"" + k1 + "\")";
+    onFocus(k1, onFocusCallback, onBlurCallback);
   }
   getRange(k1, k2) {
     key = makeKey(k1, k2);
     return getRange(key);
   }
   getRange(key) {
-    val = RANGES.get(key);
-    if (val == null) {
-      Log.e("getRange", "Range not defined");
-      return makeVal(0, 0);
-    } else {
-      return val;
-    }
+    return RANGES.get(key);
   }
   makeKey(String k1, String k2) {
     List l = new ArrayList();
@@ -181,17 +168,17 @@
     l.add(k2);
     return l;
   }
-  makeVal(Float min, Float max) {
+  makeVal(String min, String max) {
     List l = new ArrayList();
     l.add(0, min);
     l.add(1, max);
     return l;
   }
   getMin(List range) {
-    return range.get(0);
+    return new BigDecimal(range.get(0));
   }
   getMax(List range) {
-    return range.get(1);
+    return new BigDecimal(range.get(1));
   }
   isNullBirdSpecies() {
     return isNull(getFieldValue(DROPDOWN_REF));
@@ -205,14 +192,15 @@
     k1 = fieldRef;
     k2 = getFieldValue(DROPDOWN_REF);
 
-    range = getRange(k1, k2);
+    range = getRange(k1, k2); /* oh, btw */ if (range == null) return true;
     min = getMin(range);
     max = getMax(range);
 
     val = getFieldValue(fieldRef);
-    val = Float.parseFloat(val);
-    if (val > max) return false; // TODO: Make this robust for floating point numbers
-    if (val < min) return false;
+    val = new BigDecimal(val);
+
+    if (val.compareTo(min) == -1) return false;
+    if (val.compareTo(max) == +1) return false;
     return true;
   }
   validateOnBlur(String fieldRef) {
@@ -246,13 +234,13 @@
     species.add("house_sparrow");
 
     for (s : species) {
-      setRange("Bird/Measurements/Tarsus_Length", s,   6.0,  25.0);
-      setRange("Bird/Measurements/Head_Length",   s,  15.0,  40.0);
-      setRange("Bird/Measurements/Bill_Length",   s,   6.0,  16.0);
-      setRange("Bird/Measurements/Bill_Height",   s,   6.0,  10.0);
-      setRange("Bird/Measurements/Wing_Length",   s,  20.0,  90.0);
-      setRange("Bird/Measurements/Tail_Length",   s,  20.0, 130.0);
-      setRange("Bird/Measurements/Mass",          s,   6.0,  35.0);
+      setRange("Bird/Measurements/Tarsus_Length", s,   "6.0",  "25.0");
+      setRange("Bird/Measurements/Head_Length",   s,  "15.0",  "40.0");
+      setRange("Bird/Measurements/Bill_Length",   s,   "6.0",  "16.0");
+      setRange("Bird/Measurements/Bill_Height",   s,   "6.0",  "10.0");
+      setRange("Bird/Measurements/Wing_Length",   s,  "20.0",  "90.0");
+      setRange("Bird/Measurements/Tail_Length",   s,  "20.0", "130.0");
+      setRange("Bird/Measurements/Mass",          s,   "6.0",  "35.0");
     }
   }
 
