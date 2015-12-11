@@ -10,14 +10,17 @@
 <Start f="nodata">
   <Main f="noscroll">
     <Bird_Species t="dropdown">
-      <!--Needs to be populated manually-->
+      <!--Needs to be populated manually in logic-->
     </Bird_Species>
     <Location_Name t="dropdown">
-      <!--Needs to be populated manually-->
+      <!--Needs to be populated manually in logic-->
     </Location_Name>
     <Create_Bird t="button" l="Bird"/>
   </Main>
-  <search/>
+  <search>
+    <!-- TODO: Re-implement with code copied from PAZC or Boncuklu. Should be
+         able to filter using Bird_Species and Location_Name.-->
+  </search>
   <Map>
     <map t="map"/>
   </Map>
