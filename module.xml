@@ -39,8 +39,6 @@
         <opt>other</opt>
       </opts>
     </Bird_Species>
-    <timestamp/>
-    <author/>
     <Location_Name>
       <opts>
         <opt>Gap Hills</opt>
@@ -75,8 +73,17 @@
         <opt>Trap</opt>
         <opt>Mist net</opt>
         <opt>Nest</opt>
+        <opt>Aviary</opt>
+        <opt>Other</opt>
       </opts>
     </How_Caught>
+    <Capture_Status t="checkbox" f="nocertainty">
+      <opts>
+        <opt>
+          Recaptured
+        </opt>
+      </opts>
+    </Capture_Status>
     <Bill_Colour t="picture">
       <opts>
         <opt>
@@ -107,6 +114,8 @@
         </opt>
       </opts>
     </Bill_Colour>
+    <timestamp/>
+    <author/>
   </Bird_Info>
   <Measurements>
     <Tarsus_Length b="decimal"><desc>mm</desc></Tarsus_Length>
@@ -120,8 +129,33 @@
     <Mass          b="decimal"><desc>grams</desc></Mass>
   </Measurements>
   <Comments>
-    <ID_Pit_Tag f="notnull nocertainty"/>
-    <Comments f="notnull nocertainty"/>
+    <ID_Pit_Tag  f="notnull nocertainty" b="decimal"/>
+    <Colour_Band f="notnull nocertainty" t="pictures">
+      <opts>
+        <opt>Red</opt>
+        <opt>Green</opt>
+        <opt>Black</opt>
+        <opt>Dark Blue</opt>
+        <opt>Light Blue</opt>
+        <opt>Orange</opt>
+        <opt>Yellow</opt>
+        <opt>Purple</opt>
+        <opt>White</opt>
+        <opt>Brown</opt>
+        <opt>Other</opt>
+      </opts>
+    </Colour_Band>
+    <Comments            f="notnull nocertainty"/>
+    <Sample t="checkbox" f="notnull nocertainty">
+      <str>
+        <app>; </app>
+      </str>
+      <opts>
+        <opt>Blood</opt>
+        <opt>Feather</opt>
+        <opt>Sperm</opt>
+      </opts>
+    </Sample>
     <Attach_Photograph t="camera">
       <desc>Take two pictures, one of head front, one of head side</desc>
     </Attach_Photograph>
@@ -129,6 +163,37 @@
 </Bird>
 
 <logic><![CDATA[
+  startInternalGPS();
+
+/***************************** (SOME) VALIDATION ******************************/
+/* Effectively, validate when Bird/Bird_Info tab is left.                     */
+/* Protip: validateBird() is a function made by the autogenerator.  It will   */
+/* validate everything in the Bird record.                                    */
+/******************************************************************************/
+  addOnEvent("Bird/Measurements", "show", "validateBird()");
+  addOnEvent("Bird/Comments",     "show", "validateBird()");
+
+/*************************** (SOME MORE) VALIDATION ***************************/
+/* ID Pit Tag: On blur, show a warning if there are more than 15 characters   */
+/* entered.                                                                   */
+/******************************************************************************/
+  onFocusCallback = null;
+  onBlurCallback  = "validateIdPitTag()";
+  onFocus("Bird/Bird_info/Comments", onFocusCallback, onBlurCallback);
+
+  validateIdPitTag() {
+    ref       = "Bird/Bird_Info/Comments";
+    charLimit = 15;
+    doWarn    = getFieldValue(ref).length() > charLimit;
+
+    warning  = "The value of {ID_Pit_Tag} is over " + charLimit + " characters "
+    warning += "long. Please enter a shorter value."
+
+    if (doWarn) {
+      showWarning("Warning", warning);
+    }
+  }
+
 /******************************* RANGE CHECKING *******************************/
   import java.math.BigDecimal;
 
