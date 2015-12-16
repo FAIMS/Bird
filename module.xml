@@ -8,7 +8,7 @@
 </User>
 
 <Start f="nodata">
-  <Main f="noscroll">
+  <Main>
     <Bird_Species t="dropdown">
       <!--Needs to be populated manually in logic-->
     </Bird_Species>
