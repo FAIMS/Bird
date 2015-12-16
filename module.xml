@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
+<!--@POSTPROC: ./postproc.sh-->
 <module suppressWarnings="false">
 
 <User f="nodata">
@@ -9,6 +10,9 @@
 
 <Start f="nodata">
   <Main>
+    <Band_Number t="dropdown">
+      <!--Needs to be populated manually in logic-->
+    </Band_Number>
     <Bird_Species t="dropdown">
       <!--Needs to be populated manually in logic-->
     </Bird_Species>
@@ -28,8 +32,20 @@
 
 <Bird>
   <Bird_Info>
-    <Band_Number f="id notnull nocertainty">
+    <Band_Number t="dropdown" f="id notnull nocertainty">
       <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
+      <str>
+        <fmt>$1$2</fmt>
+      </str>
+      <opts>
+        <opt>026</opt>
+        <opt>027</opt>
+        <opt>036</opt>
+      </opts>
+    </Band_Number>
+    <Band_Number t="input" b="decimal" f="nodata">
+      <!--We'll link this to the data schema as a measure in the-->
+      <!--post-processing step.-->
     </Band_Number>
     <Bird_Species>
       <opts>
@@ -186,8 +202,28 @@
     charLimit = 15;
     doWarn    = getFieldValue(ref).length() > charLimit;
 
-    warning  = "The value of {ID_Pit_Tag} is over " + charLimit + " characters "
-    warning += "long. Please enter a shorter value."
+    warning  = "The value of {ID_Pit_Tag} is over " + charLimit;
+    warning += " characters long. Please enter a shorter value.";
+
+    if (doWarn) {
+      showWarning("Warning", warning);
+    }
+  }
+
+/*************************** (EVEN MORE) VALIDATION ***************************/
+/* Band Number: On blur, show a warning if there are not 5 characters         */
+/* entered.                                                                   */
+/******************************************************************************/
+  onFocusCallback = null;
+  onBlurCallback  = "validateBandNumber()";
+  onFocus("Bird/Bird_info/Band_Number", onFocusCallback, onBlurCallback);
+
+  validateIdPitTag() {
+    ref       = "Bird/Bird_Info/Band_Number";
+    charLimit = 5;
+    doWarn    = getFieldValue(ref).length() == charLimit;
+
+    warning = "The value of {Band_Number} is not equal to " + charLimit + ". ";
 
     if (doWarn) {
       showWarning("Warning", warning);
@@ -314,7 +350,8 @@
 
   fetchVocab("Bird Species", DROPDOWN_VALS, "setRanges()");
 
-/************ /Start/Main/{Bird_Species,Location_Name} POPULATION *************/
+/********************* /Start/Main/* DROPDOWN POPULATION **********************/
+  makeVocab("DropDown", "Start/Main/Band_Number",   "Location Name");
   makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
   makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
 
