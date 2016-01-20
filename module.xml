@@ -233,9 +233,9 @@
 /******************************* RANGE CHECKING *******************************/
   import java.math.BigDecimal;
 
-  Map    RANGES          = new HashMap();
-  String DROPDOWN_REF    = "Bird/Bird_Info/Bird_Species";
-  List   DROPDOWN_VALS   = new ArrayList(); //[String: vocabid, String: vocabname]
+  Map    RANGES        = new HashMap();
+  String DROPDOWN_REF  = "Bird/Bird_Info/Bird_Species";
+  List   DROPDOWN_VALS = new ArrayList(); //[String: vocabid, String: vocabname]
 
   setRange(String k1, String k2, String min, String max) {
     // Convert k2 from human-readable vocabname to vocabid
