@@ -43,10 +43,10 @@
         <opt>036</opt>
       </opts>
     </Band_Number>
-    <Band_Number t="input" b="decimal" f="nodata">
+    <Band_Number_Measure t="input" b="decimal" f="nodata">
       <!--We'll link this to the data schema as a measure in the-->
       <!--post-processing step.-->
-    </Band_Number>
+    </Band_Number_Measure>
     <Bird_Species>
       <opts>
         <opt>zebra finch</opt>
@@ -146,7 +146,7 @@
   </Measurements>
   <Comments>
     <ID_Pit_Tag  f="notnull nocertainty" b="decimal"/>
-    <Colour_Band f="notnull nocertainty" t="pictures">
+    <Colour_Band f="notnull nocertainty" t="picture">
       <opts>
         <opt>Red</opt>
         <opt>Green</opt>
@@ -162,7 +162,7 @@
       </opts>
     </Colour_Band>
     <Comments            f="notnull nocertainty"/>
-    <Sample t="checkbox" f="notnull nocertainty">
+    <Sample t="checkbox" f="id notnull nocertainty">
       <str>
         <app>; </app>
       </str>
@@ -218,7 +218,7 @@
   onBlurCallback  = "validateBandNumber()";
   onFocus("Bird/Bird_info/Band_Number", onFocusCallback, onBlurCallback);
 
-  validateIdPitTag() {
+  validateBandNumber() {
     ref       = "Bird/Bird_Info/Band_Number";
     charLimit = 5;
     doWarn    = getFieldValue(ref).length() == charLimit;
