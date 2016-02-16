@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ValidationSchema>
+  <ArchaeologicalElement name="Bird">
+    <property name="Band Number">
+      <validator type="blankchecker">
+        <param value="vocab" type="field"/>
+      </validator>
+    </property>
+    <property name="Age">
+      <validator type="blankchecker">
+        <param value="vocab" type="field"/>
+      </validator>
+    </property>
+    <property name="Sex">
+      <validator type="blankchecker">
+        <param value="vocab" type="field"/>
+      </validator>
+    </property>
+    <property name="ID Pit Tag">
+      <validator type="blankchecker">
+        <param value="measure" type="field"/>
+      </validator>
+    </property>
+    <property name="Colour Band">
+      <validator type="blankchecker">
+        <param value="vocab" type="field"/>
+      </validator>
+    </property>
+    <property name="Comments">
+      <validator type="blankchecker">
+        <param value="measure" type="field"/>
+      </validator>
+    </property>
+    <property name="Sample">
+      <validator type="blankchecker">
+        <param value="vocab" type="field"/>
+      </validator>
+    </property>
+  </ArchaeologicalElement>
+</ValidationSchema>

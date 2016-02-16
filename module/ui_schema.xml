@@ -1,0 +1,388 @@
+<?xml version="1.0"?>
+<h:html xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:jr="http://openrosa.org/javarosa" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Fill This In</h:title>
+    <model>
+      <instance>
+        <faims id="Fill_This_In">
+          <style>
+            <orientation>
+              <orientation/>
+            </orientation>
+            <even>
+              <layout_weight/>
+            </even>
+            <large>
+              <layout_weight/>
+            </large>
+          </style>
+          <User>
+            <User>
+              <Select_User/>
+            </User>
+          </User>
+          <Start>
+            <Main>
+              <Band_Number/>
+              <Bird_Species/>
+              <Location_Name/>
+              <Create_Bird/>
+            </Main>
+            <Search>
+              <Colgroup_0>
+                <Col_0>
+                  <Search_Term/>
+                </Col_0>
+                <Col_1>
+                  <Search_Button/>
+                </Col_1>
+              </Colgroup_0>
+              <Entity_List/>
+            </Search>
+            <Map>
+              <map/>
+            </Map>
+          </Start>
+          <Bird>
+            <Bird_Info>
+              <Band_Number/>
+              <Band_Number_Measure/>
+              <Bird_Species/>
+              <Location_Name/>
+              <Colgroup_GPS>
+                <Col_0>
+                  <Latitude/>
+                  <Northing/>
+                </Col_0>
+                <Col_1>
+                  <Longitude/>
+                  <Easting/>
+                </Col_1>
+              </Colgroup_GPS>
+              <Take_From_GPS/>
+              <Nest_ID/>
+              <Chick_ID/>
+              <Age/>
+              <Sex/>
+              <How_Caught/>
+              <Capture_Status/>
+              <Bill_Colour/>
+              <Timestamp/>
+              <Author/>
+            </Bird_Info>
+            <Measurements>
+              <Tarsus_Length/>
+              <Head_Length/>
+              <Colgroup_0>
+                <Col_0>
+                  <Bill_Length/>
+                </Col_0>
+                <Col_1>
+                  <Bill_Height/>
+                </Col_1>
+              </Colgroup_0>
+              <Wing_Length/>
+              <Tail_Length/>
+              <Mass/>
+            </Measurements>
+            <Comments>
+              <ID_Pit_Tag/>
+              <Colour_Band/>
+              <Comments/>
+              <Sample/>
+              <Attach_Photograph/>
+              <Button_Attach_Photograph/>
+            </Comments>
+          </Bird>
+          <logic/>
+        </faims>
+      </instance>
+      <bind type="decimal" nodeset="/faims/Bird/Bird_Info/Band_Number_Measure"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Tarsus_Length"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Head_Length"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Colgroup_0/Col_0/Bill_Length"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Colgroup_0/Col_1/Bill_Height"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Wing_Length"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Tail_Length"/>
+      <bind type="decimal" nodeset="/faims/Bird/Measurements/Mass"/>
+      <bind type="decimal" nodeset="/faims/Bird/Comments/ID_Pit_Tag"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group ref="style">
+      <label/>
+      <group ref="orientation">
+        <label/>
+        <input ref="orientation">
+          <label>horizontal</label>
+        </input>
+      </group>
+      <group ref="even">
+        <label/>
+        <input ref="layout_weight">
+          <label>1</label>
+        </input>
+      </group>
+      <group ref="large">
+        <label/>
+        <input ref="layout_weight">
+          <label>3</label>
+        </input>
+      </group>
+    </group>
+    <group ref="User">
+      <label>{User}</label>
+      <group ref="User" faims_scrollable="false">
+        <label>{User}</label>
+        <select1 appearance="compact" ref="Select_User" faims_certainty="false" faims_annotation="false">
+          <label>{Select_User}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+      </group>
+    </group>
+    <group ref="Start">
+      <label>{Start}</label>
+      <group ref="Main">
+        <label>{Main}</label>
+        <select1 ref="Band_Number">
+          <label>{Band_Number}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select1 ref="Bird_Species">
+          <label>{Bird_Species}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select1 ref="Location_Name">
+          <label>{Location_Name}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <trigger ref="Create_Bird">
+          <label>{Create_Bird}</label>
+        </trigger>
+      </group>
+      <group ref="Search" faims_scrollable="false">
+        <label>{search}</label>
+        <group faims_style="orientation" ref="Colgroup_0">
+          <label/>
+          <group faims_style="even" ref="Col_0">
+            <label/>
+            <input ref="Search_Term">
+              <label>{Search_Term}</label>
+            </input>
+          </group>
+          <group faims_style="large" ref="Col_1">
+            <label/>
+            <trigger ref="Search_Button">
+              <label>{Search}</label>
+            </trigger>
+          </group>
+        </group>
+        <select1 appearance="compact" ref="Entity_List">
+          <label>{Entity_List}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>Options not loaded</value>
+          </item>
+        </select1>
+      </group>
+      <group ref="Map" faims_scrollable="false">
+        <label>{Map}</label>
+        <input faims_map="true" ref="map">
+          <label/>
+        </input>
+      </group>
+    </group>
+    <group ref="Bird" faims_archent_type="Bird">
+      <label>{Bird}</label>
+      <group ref="Bird_Info">
+        <label>{Bird_Info}</label>
+        <select1 faims_attribute_type="vocab" ref="Band_Number" faims_attribute_name="Band Number" faims_certainty="false" faims_style_class="required">
+          <label>{Band_Number}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number" faims_certainty="false" faims_annotation="false">
+          <label>{Band_Number_Measure}</label>
+        </input>
+        <select1 faims_attribute_type="vocab" ref="Bird_Species" faims_attribute_name="Bird Species">
+          <label>{Bird_Species}</label>
+          <!--WARNING: No type t was given for this view; assuming it is a dropdown-->
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select1 faims_attribute_type="vocab" ref="Location_Name" faims_attribute_name="Location Name">
+          <label>{Location_Name}</label>
+          <!--WARNING: No type t was given for this view; assuming it is a dropdown-->
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <group ref="Colgroup_GPS" faims_style="orientation">
+          <label/>
+          <group ref="Col_0" faims_style="even">
+            <label/>
+            <input ref="Latitude" faims_attribute_name="Latitude" faims_attribute_type="measure" faims_read_only="true">
+              <label>{Latitude}</label>
+            </input>
+            <input ref="Northing" faims_attribute_name="Northing" faims_attribute_type="measure" faims_read_only="true">
+              <label>{Northing}</label>
+            </input>
+          </group>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input ref="Longitude" faims_attribute_name="Longitude" faims_attribute_type="measure" faims_read_only="true">
+              <label>{Longitude}</label>
+            </input>
+            <input ref="Easting" faims_attribute_name="Easting" faims_attribute_type="measure" faims_read_only="true">
+              <label>{Easting}</label>
+            </input>
+          </group>
+        </group>
+        <trigger ref="Take_From_GPS">
+          <label>{Take_From_GPS}</label>
+        </trigger>
+        <input faims_attribute_type="measure" ref="Nest_ID" faims_attribute_name="Nest ID" faims_certainty="false">
+          <label>{Nest_ID}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <input faims_attribute_type="measure" ref="Chick_ID" faims_attribute_name="Chick ID" faims_certainty="false">
+          <label>{Chick_ID}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <select1 appearance="full" faims_attribute_type="vocab" ref="Age" faims_attribute_name="Age" faims_style_class="required">
+          <label>{Age}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select1 appearance="full" faims_attribute_type="vocab" ref="Sex" faims_attribute_name="Sex" faims_certainty="false" faims_style_class="required">
+          <label>{Sex}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select1 appearance="full" faims_attribute_type="vocab" ref="How_Caught" faims_attribute_name="How Caught">
+          <label>{How_Caught}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <select faims_attribute_type="vocab" ref="Capture_Status" faims_attribute_name="Capture Status" faims_certainty="false">
+          <label>{Capture_Status}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select>
+        <select1 type="image" faims_attribute_type="vocab" ref="Bill_Colour" faims_attribute_name="Bill Colour">
+          <label>{Bill_Colour}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <input ref="Timestamp" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+          <label>{timestamp}</label>
+        </input>
+        <input ref="Author" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+          <label>{author}</label>
+        </input>
+      </group>
+      <group ref="Measurements">
+        <label>{Measurements}</label>
+        <input faims_attribute_type="measure" ref="Tarsus_Length" faims_attribute_name="Tarsus Length">
+          <label>{Tarsus_Length}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <input faims_attribute_type="measure" ref="Head_Length" faims_attribute_name="Head Length">
+          <label>{Head_Length}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <group ref="Colgroup_0" faims_style="orientation">
+          <label/>
+          <group ref="Col_0" faims_style="even">
+            <label/>
+            <input faims_attribute_type="measure" ref="Bill_Length" faims_attribute_name="Bill Length">
+              <label>{Bill_Length}</label>
+              <!--WARNING: No type t was given for this view; assuming it is an input-->
+            </input>
+          </group>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input faims_attribute_type="measure" ref="Bill_Height" faims_attribute_name="Bill Height">
+              <label>{Bill_Height}</label>
+              <!--WARNING: No type t was given for this view; assuming it is an input-->
+            </input>
+          </group>
+        </group>
+        <input faims_attribute_type="measure" ref="Wing_Length" faims_attribute_name="Wing Length">
+          <label>{Wing_Length}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <input faims_attribute_type="measure" ref="Tail_Length" faims_attribute_name="Tail Length">
+          <label>{Tail_Length}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <input faims_attribute_type="measure" ref="Mass" faims_attribute_name="Mass">
+          <label>{Mass}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+      </group>
+      <group ref="Comments">
+        <label>{Comments}</label>
+        <input faims_attribute_type="measure" ref="ID_Pit_Tag" faims_attribute_name="ID Pit Tag" faims_certainty="false" faims_style_class="required">
+          <label>{ID_Pit_Tag}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <select1 type="image" faims_attribute_type="vocab" ref="Colour_Band" faims_attribute_name="Colour Band" faims_certainty="false" faims_style_class="required">
+          <label>{Colour_Band}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+        <input faims_attribute_type="measure" ref="Comments" faims_attribute_name="Comments" faims_certainty="false" faims_style_class="required">
+          <label>{Comments}</label>
+          <!--WARNING: No type t was given for this view; assuming it is an input-->
+        </input>
+        <select faims_attribute_type="vocab" ref="Sample" faims_attribute_name="Sample" faims_certainty="false" faims_style_class="required">
+          <label>{Sample}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select>
+        <select type="camera" faims_attribute_type="measure" faims_sync="true" ref="Attach_Photograph" faims_attribute_name="Attach Photograph">
+          <label>{Attach_Photograph}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select>
+        <trigger ref="Button_Attach_Photograph">
+          <label>{Button_Attach_Photograph}</label>
+        </trigger>
+      </group>
+    </group>
+  </h:body>
+</h:html>
