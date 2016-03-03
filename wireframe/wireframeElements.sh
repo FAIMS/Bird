@@ -19,13 +19,17 @@ mkdir -p wireframeImages
   
   ./makeElement.sh Start_Main_Create_Bird "" button 1 false false false false false wireframeImages/
   
+  ./makeElement.sh Start_Main_Take_Next_Birds_Measurements "" button 1 false false false false false wireframeImages/
+  
   ./makeElement.sh Start_Search_Search_Term "Search Term" input 2 false false false false false wireframeImages/
   
   ./makeElement.sh Start_Search_Search_Button "Search" button 2 false false false false false wireframeImages/
   
+  ./makeElement.sh Start_Search_Entity_Types "Entity Types" dropdown 1 false false false false false wireframeImages/
+  
   ./makeElement.sh Start_Search_Entity_List "Entity List" list 1 false false false false false wireframeImages/
   
-  ./makeElement.sh Start_Map_map "" map 1 false false false false false wireframeImages/
+  ./makeElement.sh Start_Map_Map "" map 1 false false false false false wireframeImages/
   
   ./makeElement.sh Bird_Bird_Info_Band_Number "" dropdown 1 false false true true false wireframeImages/
   
@@ -63,19 +67,9 @@ mkdir -p wireframeImages
   
   ./makeElement.sh Bird_Bird_Info_Author "" input 1 false false false false true wireframeImages/
   
-  ./makeElement.sh Bird_Measurements_Tarsus_Length "" input 1 false false true false false wireframeImages/
+  ./makeElement.sh Bird_Measurements_Add_Measurements "" button 1 false false false false false wireframeImages/
   
-  ./makeElement.sh Bird_Measurements_Head_Length "" input 1 false false true false false wireframeImages/
-  
-  ./makeElement.sh Bird_Measurements_Bill_Length "" input 2 false false true false false wireframeImages/
-  
-  ./makeElement.sh Bird_Measurements_Bill_Height "" input 2 false false true false false wireframeImages/
-  
-  ./makeElement.sh Bird_Measurements_Wing_Length "" input 1 false false true false false wireframeImages/
-  
-  ./makeElement.sh Bird_Measurements_Tail_Length "" input 1 false false true false false wireframeImages/
-  
-  ./makeElement.sh Bird_Measurements_Mass "" input 1 false false true false false wireframeImages/
+  ./makeElement.sh Bird_Measurements_List_of_Measurements "" list 1 false false false false false wireframeImages/
   
   ./makeElement.sh Bird_Comments_ID_Pit_Tag "" input 1 false false true true false wireframeImages/
   
@@ -88,4 +82,24 @@ mkdir -p wireframeImages
   ./makeElement.sh Bird_Comments_Attach_Photograph "" camera 1 false false true false false wireframeImages/
   
   ./makeElement.sh Bird_Comments_Button_Attach_Photograph "" button 1 false false false false false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Timestamp "" input 1 false false true false true wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Band_Number "" dropdown 1 false false true false true wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Band_Number_Measure "" input 1 false false false false true wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Tarsus_Length "" input 1 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Head_Length "" input 1 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Bill_Length "" input 2 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Bill_Height "" input 2 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Wing_Length "" input 1 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Tail_Length "" input 1 false false true true false wireframeImages/
+  
+  ./makeElement.sh Measurements_Measurements_Mass "" input 1 false false true true false wireframeImages/
   

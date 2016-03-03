@@ -7,6 +7,7 @@
 <arch16n k="{036}"><![CDATA[036]]></arch16n>
 <arch16n k="{_1_2}"><![CDATA[$1$2]]></arch16n>
 <arch16n k="{Accuracy}"><![CDATA[Accuracy]]></arch16n>
+<arch16n k="{Add_Measurements}"><![CDATA[Add Measurements]]></arch16n>
 <arch16n k="{Adult}"><![CDATA[Adult]]></arch16n>
 <arch16n k="{Age}"><![CDATA[Age]]></arch16n>
 <arch16n k="{Alert}"><![CDATA[Alert]]></arch16n>
@@ -71,12 +72,12 @@
 <arch16n k="{Juvenile}"><![CDATA[Juvenile]]></arch16n>
 <arch16n k="{Latitude}"><![CDATA[Latitude]]></arch16n>
 <arch16n k="{Light_Blue}"><![CDATA[Light Blue]]></arch16n>
+<arch16n k="{List_of_Measurements}"><![CDATA[List of Measurements]]></arch16n>
 <arch16n k="{Location_Name}"><![CDATA[Location Name]]></arch16n>
 <arch16n k="{Longitude}"><![CDATA[Longitude]]></arch16n>
 <arch16n k="{long_tailed_finch}"><![CDATA[long-tailed finch]]></arch16n>
 <arch16n k="{Main}"><![CDATA[Main]]></arch16n>
 <arch16n k="{Male}"><![CDATA[Male]]></arch16n>
-<arch16n k="{map}"><![CDATA[map]]></arch16n>
 <arch16n k="{Map}"><![CDATA[Map]]></arch16n>
 <arch16n k="{Mass}"><![CDATA[Mass]]></arch16n>
 <arch16n k="{Measurements}"><![CDATA[Measurements]]></arch16n>
@@ -122,9 +123,11 @@
 <arch16n k="{Sync_Enabled}"><![CDATA[Sync enabled]]></arch16n>
 <arch16n k="{Tail_Length}"><![CDATA[Tail Length]]></arch16n>
 <arch16n k="{Take_From_GPS}"><![CDATA[Take From GPS]]></arch16n>
+<arch16n k="{Take_Next_Bird_s_Measurements}"><![CDATA[Take Next Bird's Measurements]]></arch16n>
 <arch16n k="{Tarsus_Length}"><![CDATA[Tarsus Length]]></arch16n>
 <arch16n k="{This_record_is_unsaved_and_cannot_be_duplicated}"><![CDATA[This record is unsaved and cannot be duplicated]]></arch16n>
 <arch16n k="{timestamp}"><![CDATA[Timestamp]]></arch16n>
+<arch16n k="{Timestamp}"><![CDATA[Timestamp]]></arch16n>
 <arch16n k="{Trap}"><![CDATA[Trap]]></arch16n>
 <arch16n k="{Unknown}"><![CDATA[Unknown]]></arch16n>
 <arch16n k="{User}"><![CDATA[User]]></arch16n>

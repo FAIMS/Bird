@@ -20,13 +20,16 @@
       <!--Needs to be populated manually in logic-->
     </Location_Name>
     <Create_Bird t="button" l="Bird"/>
+    <Take_Next_Birds_Measurements t="button">
+      Take Next Bird's Measurements
+    </Take_Next_Birds_Measurements>
   </Main>
   <search>
     <!-- TODO: Re-implement with code copied from PAZC or Boncuklu. Should be
          able to filter using Bird_Species and Location_Name.-->
   </search>
   <Map>
-    <map t="map"/>
+    <Map t="map"/>
   </Map>
 </Start>
 
@@ -133,16 +136,9 @@
     <timestamp/>
     <author/>
   </Bird_Info>
-  <Measurements>
-    <Tarsus_Length b="decimal"><desc>mm</desc></Tarsus_Length>
-    <Head_Length   b="decimal"><desc>mm</desc></Head_Length>
-    <cols>
-      <Bill_Length b="decimal"><desc>mm</desc></Bill_Length>
-      <Bill_Height b="decimal"><desc>mm</desc></Bill_Height>
-    </cols>
-    <Wing_Length   b="decimal"><desc>mm</desc></Wing_Length>
-    <Tail_Length   b="decimal"><desc>mm</desc></Tail_Length>
-    <Mass          b="decimal"><desc>grams</desc></Mass>
+  <Measurements f="noscroll">
+    <Add_Measurements     t="button" lc="Measurements"/>
+    <List_of_Measurements t="list" ec="Measurements"/>
   </Measurements>
   <Comments>
     <ID_Pit_Tag  f="notnull nocertainty" b="decimal"/>
@@ -161,7 +157,7 @@
         <opt>Other</opt>
       </opts>
     </Colour_Band>
-    <Comments            f="notnull nocertainty"/>
+    <Comments            f="   notnull nocertainty"/>
     <Sample t="checkbox" f="id notnull nocertainty">
       <str>
         <app>; </app>
@@ -178,8 +174,184 @@
   </Comments>
 </Bird>
 
+<Measurements>
+  <Measurements>
+    <Timestamp           f="id readonly"/>
+    <Band_Number         f="id readonly">
+      <opts>
+        <opt>026</opt>
+        <opt>027</opt>
+        <opt>036</opt>
+      </opts>
+    </Band_Number>
+    <Band_Number_Measure f="nodata readonly">
+      <!--We'll link this to the data schema as a measure in the-->
+      <!--post-processing step.-->
+    </Band_Number_Measure>
+    <Tarsus_Length f="notnull" b="decimal"><desc>mm</desc></Tarsus_Length>
+    <Head_Length   f="notnull" b="decimal"><desc>mm</desc></Head_Length>
+    <cols>
+      <Bill_Length f="notnull" b="decimal"><desc>mm</desc></Bill_Length>
+      <Bill_Height f="notnull" b="decimal"><desc>mm</desc></Bill_Height>
+    </cols>
+    <Wing_Length   f="notnull" b="decimal"><desc>mm</desc></Wing_Length>
+    <Tail_Length   f="notnull" b="decimal"><desc>mm</desc></Tail_Length>
+    <Mass          f="notnull" b="decimal"><desc>grams</desc></Mass>
+  </Measurements>
+</Measurements>
+
 <logic><![CDATA[
   startInternalGPS();
+
+/********************* /Start/Main/* DROPDOWN POPULATION **********************/
+  makeVocab("DropDown", "Start/Main/Band_Number",   "Band Number");
+  makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
+  makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
+
+/****************************** LOCATION COPYING ******************************/
+  addOnEvent("Start", "show", "loadLocationName()");
+  addOnEvent("Bird",  "show", "copyLocationName()");
+
+  loadLocationName() {
+    src = "Start/Main/Location_Name";
+    setFieldValueFromLocalSettings(src, src);
+  }
+
+  copyLocationName() {
+    src = "Start/Main/Location_Name";
+    dst = "Bird/Bird_Info/Location_Name";
+    val = getFieldValue(src);
+
+    insertIntoLocalSettings(src, val);
+    setFieldValue(dst, val);
+  }
+/**************************** BIRD SPECIES COPYING ****************************/
+  addOnEvent("Start", "show", "loadBirdSpecies()");
+  addOnEvent("Bird",  "show", "copyBirdSpecies()");
+
+  loadBirdSpecies() {
+    src = "Start/Main/Bird_Species";
+    setFieldValueFromLocalSettings(src, src);
+  }
+
+  copyBirdSpecies() {
+    src = "Start/Main/Bird_Species";
+    dst = "Bird/Bird_Info/Bird_Species";
+    val = getFieldValue(src);
+
+    insertIntoLocalSettings(src, val);
+    setFieldValue(dst, val);
+  }
+/**************************** BAND NUMBER COPYING *****************************/
+  addOnEvent("Start", "show", "loadBandNumber()");
+  addOnEvent("Bird",  "show", "copyBandNumber()");
+
+  loadBandNumber() {
+    src = "Start/Main/Band_Number";
+    setFieldValueFromLocalSettings(src, src);
+  }
+
+  copyBandNumber() {
+    src = "Start/Main/Band_Number";
+    dst = "Bird/Bird_Info/Band_Number";
+    val = getFieldValue(src);
+
+    setFieldValue(dst, val);
+  }
+
+/************** DATE AND BAND NUMBER POPULATION FOR MEASUREMENTS **************/
+/* Implemented using @POSTPROC.                                               */
+/******************************************************************************/
+  setMeasurementsTimestamp() {
+    ref     = "Measurements/Measurements/Timestamp";
+    fmt     = "dd MMM HH:mm:ss z";
+    date    = new Date();
+    dateFmt = new java.text.SimpleDateFormat(fmt);
+    dateStr = dateFmt.format(date);
+    setFieldValue(ref, dateStr);
+  }
+
+  setMeasurementsBandNumber() {
+    uuid = getUuid("Bird");
+    q = getDuplicateAttributeQuery(uuid, "'Band Number'");
+    fetchAll(q, new FetchCallback() {
+      onFetch(result) {
+        if (result == null) {
+          return;
+        }
+        vocabid = result.get(0).get(2);
+        val     = vocabid;
+        dst     = "Measurements/Measurements/Band_Number";
+        setFieldValue(dst, val);
+      }
+    });
+  }
+
+  setMeasurementsBandNumberMeasure() {
+    uuid = getUuid("Bird");
+    q = getDuplicateAttributeQuery(uuid, "'Band Number'");
+    fetchAll(q, new FetchCallback() {
+      onFetch(result) {
+        if (result == null) {
+          return;
+        }
+        vocabid = result.get(0).get(3);
+        val     = vocabid;
+        dst     = "Measurements/Measurements/Band_Number_Measure";
+        setFieldValue(dst, val);
+      }
+    });
+  }
+
+/*************************** CHRONOLOGICAL SAMPLING ***************************/
+  addOnEvent(
+      "Start/Main/Take_Next_Birds_Measurements",
+      "click",
+      "takeNextMeasurementsBird()"
+  );
+
+  // TODO: Ensure that autoSaving works for consecutively taken Measurements
+  // Effectively, disables the "take next bird's measurement" button in the nav
+  // bar when the user navigates away from the Measurements tab group. So this
+  // event should occur when a tab group other than Measurements is displayed.
+  doAllowSamplingInNav = false;
+  addOnEvent("User",  "show", "doAllowSamplingInNav = false");
+  addOnEvent("Start", "show", "doAllowSamplingInNav = false");
+  addOnEvent("Bird",  "show", "doAllowSamplingInNav = false");
+
+  takeNextMeasurementsBird() {
+    doAllowSamplingInNav = true;
+
+    // TODO: Get a query which gets the uuid of the next bird record lacking a
+    //       measurement in the current >time period, >2016. ISHYGDDT XDD.
+    q  = "SELECT uuid ";
+    q += "  FROM latestnondeletedarchent ";
+    q += "  JOIN aenttype USING (Aenttypeid) ";
+    q += " WHERE aenttypename = 'Bird' ";
+    q += "   AND uuid NOT IN ( ";
+    q += "SELECT uuid ";
+    q += "  FROM latestnondeletedaentreln ";
+    q += "  JOIN latestnondeletedrelationship USING (relationshipid) ";
+    q += "  JOIN relntype USING (relntypeid) ";
+    q += " WHERE relntypename = 'Bird - Measurements' ";
+    q += "   AND aentrelntimestamp > datetime('now', '-10 seconds')); ";
+
+    uuid = "??? PROFIT!";
+    fetchAll(q, new FetchCallback() {
+      onFetch(result) {
+        if        (result == null    ) {
+          return;
+        } else if (result.size() == 0) {
+          showToast("No measurements to take");
+        } else {
+          uuid = result.get(0).get(0);
+          parentTabgroup = "Bird";
+          setUuid(parentTabgroup, uuid);
+          newMeasurements();
+        }
+      }
+    });
+  }
 
 /***************************** (SOME) VALIDATION ******************************/
 /* Effectively, validate when Bird/Bird_Info tab is left.                     */
@@ -195,10 +367,10 @@
 /******************************************************************************/
   onFocusCallback = null;
   onBlurCallback  = "validateIdPitTag()";
-  onFocus("Bird/Bird_info/Comments", onFocusCallback, onBlurCallback);
+  onFocus("Bird/Comments/ID_Pit_Tag", onFocusCallback, onBlurCallback);
 
   validateIdPitTag() {
-    ref       = "Bird/Bird_Info/Comments";
+    ref       = "Bird/Comments/ID_Pit_Tag";
     charLimit = 15;
     doWarn    = getFieldValue(ref).length() > charLimit;
 
@@ -216,7 +388,7 @@
 /******************************************************************************/
   onFocusCallback = null;
   onBlurCallback  = "validateBandNumber()";
-  onFocus("Bird/Bird_info/Band_Number", onFocusCallback, onBlurCallback);
+  onFocus("Bird/Bird_Info/Band_Number", onFocusCallback, onBlurCallback);
 
   validateBandNumber() {
     ref       = "Bird/Bird_Info/Band_Number";
@@ -338,56 +510,16 @@
     species.add("house_sparrow");
 
     for (s : species) {
-      setRange("Bird/Measurements/Tarsus_Length", s,   "6.0",  "25.0");
-      setRange("Bird/Measurements/Head_Length",   s,  "15.0",  "40.0");
-      setRange("Bird/Measurements/Bill_Length",   s,   "6.0",  "16.0");
-      setRange("Bird/Measurements/Bill_Height",   s,   "6.0",  "10.0");
-      setRange("Bird/Measurements/Wing_Length",   s,  "20.0",  "90.0");
-      setRange("Bird/Measurements/Tail_Length",   s,  "20.0", "130.0");
-      setRange("Bird/Measurements/Mass",          s,   "6.0",  "35.0");
+      setRange("Measurements/Measurements/Tarsus_Length", s,   "6.0",  "25.0");
+      setRange("Measurements/Measurements/Head_Length",   s,  "15.0",  "40.0");
+      setRange("Measurements/Measurements/Bill_Length",   s,   "6.0",  "16.0");
+      setRange("Measurements/Measurements/Bill_Height",   s,   "6.0",  "10.0");
+      setRange("Measurements/Measurements/Wing_Length",   s,  "20.0",  "90.0");
+      setRange("Measurements/Measurements/Tail_Length",   s,  "20.0", "130.0");
+      setRange("Measurements/Measurements/Mass",          s,   "6.0",  "35.0");
     }
   }
 
   fetchVocab("Bird Species", DROPDOWN_VALS, "setRanges()");
-
-/********************* /Start/Main/* DROPDOWN POPULATION **********************/
-  makeVocab("DropDown", "Start/Main/Band_Number",   "Location Name");
-  makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
-  makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
-
-/****************************** LOCATION COPYING ******************************/
-  addOnEvent("Start", "show", "loadLocationName()");
-  addOnEvent("Bird",  "show", "copyLocationName()");
-
-  loadLocationName() {
-    src = "Start/Main/Location_Name";
-    setFieldValueFromLocalSettings(src, src);
-  }
-
-  copyLocationName() {
-    src = "Start/Main/Location_Name";
-    dst = "Bird/Bird_Info/Location_Name";
-    val = getFieldValue(src);
-
-    insertIntoLocalSettings(src, val);
-    setFieldValue(dst, val);
-  }
-/**************************** BIRD SPECIES COPYING ****************************/
-  addOnEvent("Start", "show", "loadBirdSpecies()");
-  addOnEvent("Bird",  "show", "copyBirdSpecies()");
-
-  loadBirdSpecies() {
-    src = "Start/Main/Bird_Species";
-    setFieldValueFromLocalSettings(src, src);
-  }
-
-  copyBirdSpecies() {
-    src  = "Start/Main/Bird_Species";
-    dst = "Bird/Bird_Info/Bird_Species";
-    val  = getFieldValue(src);
-
-    insertIntoLocalSettings(src, val);
-    setFieldValue(dst, val);
-  }
 ]]></logic>
 </module>
