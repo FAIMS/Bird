@@ -50,4 +50,27 @@ replacement="  removeNavigationButton(\"measure\");
   removeNavigationButton(\"validate\");"
 perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
 
+string="newBird(){
+  String tabgroup = \"Bird\";
+
+
+  setUuid(tabgroup, null);
+  newTabGroup(tabgroup);
+
+}"
+replacement="newBird(){
+  String tabgroup = \"Bird\";
+
+
+  setUuid(tabgroup, null);
+  newTabGroup(tabgroup);
+
+  copyLocationName();
+  copyBirdSpecies();
+  copyBandNumber();
+}"
+perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
+
 rm ui_logic.bsh.original
+
+echo "No_measurements_to_take=No measurements to take" >> english.0.properties

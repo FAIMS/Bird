@@ -930,6 +930,9 @@ newBird(){
   setUuid(tabgroup, null);
   newTabGroup(tabgroup);
 
+  copyLocationName();
+  copyBirdSpecies();
+  copyBandNumber();
 }
 
 duplicateBird(){
@@ -1311,13 +1314,13 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
 
 /****************************** LOCATION COPYING ******************************/
   addOnEvent("Start", "show", "loadLocationName()");
-  addOnEvent("Bird",  "show", "copyLocationName()");
 
   loadLocationName() {
     src = "Start/Main/Location_Name";
     setFieldValueFromLocalSettings(src, src);
   }
 
+  // Occurs upon Bird creation using @POSTPROC
   copyLocationName() {
     src = "Start/Main/Location_Name";
     dst = "Bird/Bird_Info/Location_Name";
@@ -1328,13 +1331,13 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
   }
 /**************************** BIRD SPECIES COPYING ****************************/
   addOnEvent("Start", "show", "loadBirdSpecies()");
-  addOnEvent("Bird",  "show", "copyBirdSpecies()");
 
   loadBirdSpecies() {
     src = "Start/Main/Bird_Species";
     setFieldValueFromLocalSettings(src, src);
   }
 
+  // Occurs upon Bird creation using @POSTPROC
   copyBirdSpecies() {
     src = "Start/Main/Bird_Species";
     dst = "Bird/Bird_Info/Bird_Species";
@@ -1345,13 +1348,13 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
   }
 /**************************** BAND NUMBER COPYING *****************************/
   addOnEvent("Start", "show", "loadBandNumber()");
-  addOnEvent("Bird",  "show", "copyBandNumber()");
 
   loadBandNumber() {
     src = "Start/Main/Band_Number";
     setFieldValueFromLocalSettings(src, src);
   }
 
+  // Occurs upon Bird creation using @POSTPROC
   copyBandNumber() {
     src = "Start/Main/Band_Number";
     dst = "Bird/Bird_Info/Band_Number";
@@ -1365,7 +1368,7 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
 /******************************************************************************/
   setMeasurementsTimestamp() {
     ref     = "Measurements/Measurements/Timestamp";
-    fmt     = "dd MMM HH:mm:ss z";
+    fmt     = "yyyy-MM-dd HH:mm:ss Z";
     date    = new Date();
     dateFmt = new java.text.SimpleDateFormat(fmt);
     dateStr = dateFmt.format(date);
@@ -1377,9 +1380,9 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
     q = getDuplicateAttributeQuery(uuid, "'Band Number'");
     fetchAll(q, new FetchCallback() {
       onFetch(result) {
-        if (result == null) {
-          return;
-        }
+        if (result               == null) return;
+        if (result       .size() == 0   ) return;
+        if (result.get(0).size()  < 2+1 ) return;
         vocabid = result.get(0).get(2);
         val     = vocabid;
         dst     = "Measurements/Measurements/Band_Number";
@@ -1393,11 +1396,11 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
     q = getDuplicateAttributeQuery(uuid, "'Band Number'");
     fetchAll(q, new FetchCallback() {
       onFetch(result) {
-        if (result == null) {
-          return;
-        }
-        vocabid = result.get(0).get(3);
-        val     = vocabid;
+        if (result               == null) return;
+        if (result       .size() == 0   ) return;
+        if (result.get(0).size()  < 3+1 ) return;
+        measure = result.get(0).get(3);
+        val     = measure;
         dst     = "Measurements/Measurements/Band_Number_Measure";
         setFieldValue(dst, val);
       }
@@ -1413,17 +1416,21 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
 
   // Effectively, disables the "take next bird's measurement" button in the nav
   // bar when the user navigates away from the Measurements tab group. So this
-  // event should occur when a tab group other than Measurements is displayed.
+  // event should occur when any tab group other than Measurements is displayed.
   doAllowSamplingInNav = false;
   addOnEvent("User",  "show", "doAllowSamplingInNav = false");
   addOnEvent("Start", "show", "doAllowSamplingInNav = false");
   addOnEvent("Bird",  "show", "doAllowSamplingInNav = false");
 
+  // TODO: Cache the query results. But how often should results be cached?
   takeNextMeasurementsBird() {
+    if (doAllowSamplingInNav) {
+      String  tabgroup = "Measurements";
+      Boolean doWarn   = false;
+      cancelTabGroup(tabgroup, doWarn);
+    }
     doAllowSamplingInNav = true;
 
-    // TODO: Get a query which gets the uuid of the next bird record lacking a
-    //       measurement in the current >time period, >2016. ISHYGDDT XDD.
     q  = "SELECT uuid ";
     q += "  FROM latestnondeletedarchent ";
     q += "  JOIN aenttype USING (Aenttypeid) ";
@@ -1434,7 +1441,7 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
     q += "  JOIN latestnondeletedrelationship USING (relationshipid) ";
     q += "  JOIN relntype USING (relntypeid) ";
     q += " WHERE relntypename = 'Bird - Measurements' ";
-    q += "   AND aentrelntimestamp > datetime('now', '-10 seconds')); ";
+    q += "   AND aentrelntimestamp > datetime('now', '-1 minute')); ";
 
     uuid = "??? PROFIT!";
     fetchAll(q, new FetchCallback() {
@@ -1442,7 +1449,7 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
         if        (result == null    ) {
           return;
         } else if (result.size() == 0) {
-          showToast("No measurements to take");
+          showToast("{No_measurements_to_take}");
         } else {
           uuid = result.get(0).get(0);
           parentTabgroup = "Bird";
