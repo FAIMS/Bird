@@ -21,7 +21,7 @@
     </Location_Name>
     <Create_Bird t="button" l="Bird"/>
     <Take_Next_Birds_Measurements t="button">
-      Take Next Bird's Measurements
+      Take Next Measurement
     </Take_Next_Birds_Measurements>
   </Main>
   <search>
