@@ -27,6 +27,7 @@
               <Bird_Species/>
               <Location_Name/>
               <Create_Bird/>
+              <Take_Next_Birds_Measurements/>
             </Main>
             <!--WARNING:  __                                                        -->
             <!--WARNING: /  \        _____________________________________________  -->
@@ -214,6 +215,9 @@
         </select1>
         <trigger ref="Create_Bird">
           <label>{Create_Bird}</label>
+        </trigger>
+        <trigger ref="Take_Next_Birds_Measurements">
+          <label>{Take_Next_Measurement}</label>
         </trigger>
       </group>
       <group ref="Search_Birds" faims_scrollable="false">
