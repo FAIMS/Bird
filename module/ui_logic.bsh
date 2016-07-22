@@ -2,7 +2,10 @@ import android.util.Log;
 
 Object dialog;          // Used to help coordinate the display of a "busy..." dialog
 String parentTabgroup;  // Used to allow entities to be saved as children
+String parentTabgroup__;// Used to allow entities to be saved as children
 String redirectTab;     // makes newTab work as expected
+String username = "";
+String userid   = "";
 
 setFileSyncEnabled(true);
 setSyncDelay(5.0f);
@@ -48,6 +51,81 @@ setFieldValueFromLocalSettings(String key, String ref) {
   });
 }
 
+/*********************** REGEX-FREE STRING REPLACEMENT ************************/
+replaceFirst(haystack, needle, replacement) {
+  i = haystack.indexOf(needle);
+  if (i == -1)           return haystack;
+  if (needle.equals("")) return haystack;
+  pre  = haystack.substring(0, i                                   );
+  post = haystack.substring(   i+needle.length(), haystack.length());
+  return pre + replacement + post;
+}
+
+replaceFirst(haystack, replacement) {
+  return replaceFirst(haystack, "%s", replacement);
+}
+
+/**************************** FIELD COPYING HELPER ****************************/
+/* Provides an easy way to copy field values, even between vocabs.            */
+/******************************************************************************/
+copyFieldValue(src, dst) {
+  Boolean doFindVocabId = true;
+  copyFieldValue(src, dst, doFindVocabId);
+}
+
+/* `src`           The ref of the source field.
+ * `dst`           The ref of the destination field.
+ * `doFindVocabId` If this is true, and the properties/attributes of `src` and
+ *                 `dst` are different, `copyFieldValue` treats `src` and `dst`
+ *                 as if they were menus. Therefore, to copy the value seen by
+ *                 the user (i.e. the vocabName of `src`), a database query is
+ *                 performed. The query determines the which vocabId of `dst`
+ *                 will make it display the same vocabName as `src`.
+ *
+ *                 If `doFindVocabId` is false, the value returned by
+ *                 `getFieldValue` is copied, without any database accesses.
+ */
+copyFieldValue(src, dst, doFindVocabId) {
+  String vocabIdSrc   = getFieldValue(src);
+  String vocabNameSrc = getMenuValue (src);
+
+  String attrNameSrc = src.split("\\/")[2];
+  String attrNameDst = dst.split("\\/")[2];
+
+  attrNameSrc = attrNameSrc.replaceAll("_", " ");
+  attrNameDst = attrNameDst.replaceAll("_", " ");
+
+  if (attrNameSrc.equals(attrNameDst) || !doFindVocabId) {
+    setFieldValue(dst, vocabIdSrc);
+    return;
+  }
+
+  String q = "";
+  q += "    SELECT vocabid";
+  q += "      FROM vocabulary";
+  q += " LEFT JOIN attributekey";
+  q += "     USING (attributeid)";
+  q += "     WHERE attributename = '{attrNameDst}'";
+  q += "       AND vocabname     = '{vocabNameSrc}'";
+  q  = replaceFirst(q, "{attrNameDst}",  attrNameDst);
+  q  = replaceFirst(q, "{vocabNameSrc}", vocabNameSrc);
+
+
+  FetchCallback populate = new FetchCallback() {
+    onFetch(result) {
+      if (result == null) {
+        // Fall back to dumb field copying
+        copyFieldValue(src, dst, false);
+      }
+
+      String vocabIdDst = result.get(0);
+      setFieldValue(dst, vocabIdDst);
+    }
+  };
+
+  fetchOne(q, populate);
+}
+
 newTab(String tab, Boolean resolveTabGroups) {
   if (!resolveTabGroups) {
     return newTab(tab);
@@ -66,8 +144,6 @@ newTab(String tab, Boolean resolveTabGroups) {
     case 2:
       String tabgroupString = path[0];
       String tabString      = path[0] + "/" + path[1];
-
-      showWarning(tabString, tabString);
 
       redirectTab = tabString;
       String onShowTabgroup = "if (!isNull(redirectTab)) { newTab(redirectTab); redirectTab = \"\"; }";
@@ -146,10 +222,68 @@ getDropdownItemValue() {
 addOnEvent("Start/Main/Band_Number", "click", "dropdownItemValue = getFieldValue(\"Start/Main/Band_Number\")");
 addOnEvent("Start/Main/Bird_Species", "click", "dropdownItemValue = getFieldValue(\"Start/Main/Bird_Species\")");
 addOnEvent("Start/Main/Location_Name", "click", "dropdownItemValue = getFieldValue(\"Start/Main/Location_Name\")");
+addOnEvent("Start/Search_Birds/Band_Number_1", "click", "dropdownItemValue = getFieldValue(\"Start/Search_Birds/Band_Number_1\")");
 addOnEvent("Bird/Bird_Info/Band_Number", "click", "dropdownItemValue = getFieldValue(\"Bird/Bird_Info/Band_Number\")");
 addOnEvent("Bird/Bird_Info/Bird_Species", "click", "dropdownItemValue = getFieldValue(\"Bird/Bird_Info/Bird_Species\")");
 addOnEvent("Bird/Bird_Info/Location_Name", "click", "dropdownItemValue = getFieldValue(\"Bird/Bird_Info/Location_Name\")");
 addOnEvent("Measurements/Measurements/Band_Number", "click", "dropdownItemValue = getFieldValue(\"Measurements/Measurements/Band_Number\")");
+
+/******************************************************************************/
+/*                             MENU VALUE GETTER                              */
+/*                                                                            */
+/* Provides simple ways of getting a menu's vocabname as opposed to the       */
+/* default, which is the vocabid.                                             */
+/******************************************************************************/
+// Map from vocabid to vocabname. Populated by `fetchMenuValues()`.
+Map MENU_VALUES = null;
+
+/*
+ * Initialises `MENU_VALUES` with the (vocabid -> vocabname) mapping of every
+ * menu.
+ */
+fetchMenuValues() {
+  MENU_VALUES = new HashMap();
+
+  String q = "";
+  q += " SELECT vocabid, vocabname";
+  q += " FROM   vocabulary";
+
+  populateHashMap = new FetchCallback() {
+    onFetch(result) {
+      for (row : result) {
+        vocabId   = row.get(0);
+        vocabName = row.get(1);
+        MENU_VALUES.put(vocabId, vocabName);
+      }
+    }
+  };
+
+  fetchAll(q, populateHashMap);
+}
+
+fetchMenuValues();
+
+/* Returns a menu's vocabname, instead of the (counter-intuitive) vocabid.
+ */
+getFieldValue(String ref, Boolean doConvertVocabIds) {
+  if (!doConvertVocabIds) {
+    return getFieldValue(ref);
+  }
+
+  String val       = getFieldValue(ref);
+  String vocabName = MENU_VALUES.get(val);
+
+  if (val       == null) return "";
+  if (vocabName == null) return "";
+  return vocabName;
+}
+
+/*
+ * Shorthand for writing getFieldValue(ref, true).
+ */
+getMenuValue(String ref) {
+  return getFieldValue(ref, true);
+}
 
 /******************************************************************************/
 /*                                 ACTION BAR                                 */
@@ -330,8 +464,6 @@ populateListForUsers(){
   });
 }
 
-String username = "";
-
 selectUser () {
   String userVocabId  = getListItemValue();
   String userQ        = "SELECT userid,fname,lname,email FROM user " +
@@ -346,6 +478,7 @@ selectUser () {
       );
       setUser(user);
       username = result.get(1) + " " + result.get(2);
+      userid   = result.get(0);
     }
   };
 
@@ -449,12 +582,16 @@ makeVocab(String type, String path, String attrib, List vocabExclusions, String 
           }
           result=filteredVocab;
         }
+        Boolean hasNull =
+                vocabExclusions == null
+            || !vocabExclusions.contains("")
+            && !vocabExclusions.contains(null);
         // print("makeVocab() filtered result: " + result);
         if(type.equals("CheckBoxGroup")) {
           populateCheckBoxGroup(path, result);
         } else if(type.equals("DropDown")) {
           // populateDropDown(path, result);
-          populateDropDown(path, result, true);
+          populateDropDown(path, result, hasNull);
         } else if(type.equals("RadioGroup")) {
           populateRadioGroup(path, result);
         } else if(type.equals("List")) {
@@ -580,7 +717,7 @@ validateMeasurements() {
 /******************************************************************************/
 /*                                 AUTOSAVING                                 */
 /******************************************************************************/
-Map tabgroupToUuid = new HashMap();
+Map tabgroupToUuid = Collections.synchronizedMap(new HashMap());
 
 getUuid(String tabgroup) {
   tabgroupToUuid.get(tabgroup);
@@ -600,12 +737,13 @@ saveTabGroup(String tabgroup, String callback) {
   List    geometry        = null;
   List    attributes      = null;
   String  parentTabgroup_ = parentTabgroup;
+  Boolean userWasSet      = !username.equals("");
 
   parentTabgroup = null;
   SaveCallback saveCallback  = new SaveCallback() {
     onSave(uuid, newRecord) {
       setUuid(tabgroup, uuid);
-      populateAuthorAndTimestamp(tabgroup);
+      // Make a child-parent relationship if need be.
       if (newRecord && !isNull(parentTabgroup_)) {
         String rel = "";
         rel += parentTabgroup_.replaceAll("_", " ");
@@ -620,6 +758,18 @@ saveTabGroup(String tabgroup, String callback) {
           null
         );
       }
+
+      // This fixes an interesting bug. Without this, if a user was not set
+      // (by calling `setUser`) at the time `saveTabGroup` was first called, but
+      // set by the time `onSave` was called, the tab group is saved correctly
+      // the first time only.
+      //
+      // Adding this allows subsequent saves to succeed. Presumably it plays
+      // some role in helping FAIMS associate the correct user with a record.
+      if (!userWasSet) {
+        saveTabGroup(tabgroup);
+      }
+
       execute(callback);
     }
     onError(message) {
@@ -627,40 +777,43 @@ saveTabGroup(String tabgroup, String callback) {
     }
   };
 
-  populateAuthorAndTimestamp(tabgroup);
   saveTabGroup(tabgroup, id, geometry, attributes, saveCallback, enableAutosave);
+}
+
+getTimestampNow() {
+  fmt = "yyyy-MM-dd HH:mm:ssZ";
+  return getTimestampNow(fmt);
+}
+
+getTimestampNow(String fmt) {
+  date    = new Date();
+  dateFmt = new java.text.SimpleDateFormat(fmt);
+  dateStr = dateFmt.format(date);
+
+  // Insert colon into timezone (e.g. +1000 -> +10:00)
+  String left; String right;
+
+  left    = dateStr.substring(0, dateStr.length() - 2);
+  right   = dateStr.substring(   dateStr.length() - 2);
+  dateStr = left + ":" + right;
+
+  return dateStr;
 }
 
 populateAuthorAndTimestamp(String tabgroup) {
   Map tabgroupToAuthor    = new HashMap();
   Map tabgroupToTimestamp = new HashMap();
-  tabgroupToAuthor.put("Bird", "Bird/Bird_Info/Author");
-  tabgroupToTimestamp.put("Bird", "Bird/Bird_Info/Timestamp");
+  tabgroupToAuthor.put("Bird", "Bird/Bird_Info/author");
+  tabgroupToTimestamp.put("Bird", "Bird/Bird_Info/timestamp");
 
-  String uuid          = getUuid(tabgroup);
   String authorPath    = tabgroupToAuthor.get(tabgroup);
   String timestampPath = tabgroupToTimestamp.get(tabgroup);
-  if (isNull(uuid)) {
-    if (!isNull(authorPath))
-      setFieldValue(authorPath,    "Entity not yet saved");
-    if (!isNull(timestampPath))
-      setFieldValue(timestampPath, "Entity not yet saved");
-    return;
-  }
 
-  String q = "SELECT createdat, createdby " +
-             "  FROM createdmodifiedatby " +
-             " WHERE uuid = '" + uuid + "'";
-  FetchCallback callback = new FetchCallback() {
-    onFetch(result) {
-      if (!isNull(timestampPath))
-        setFieldValue(timestampPath, result.get(0));
-      if (!isNull(authorPath))
-        setFieldValue(authorPath,    result.get(1));
-    }
-  };
+  String authorVal    = username;
+  String timestampVal = getTimestampNow();
 
-  fetchOne(q, callback);
+  if (!isNull(authorPath))    setFieldValue(authorPath,    authorVal);
+  if (!isNull(timestampPath)) setFieldValue(timestampPath, timestampVal);
 }
 
 onShowBird () {
@@ -681,6 +834,7 @@ onClickUserSelectUser () {
 }
 onClickStartCreateBird () {
   // TODO: Add some things which should happen when this element is clicked
+  parentTabgroup__ = "Start";
   newBird();
 }
 onClickBirdAddMeasurements () {
@@ -690,7 +844,8 @@ onClickBirdAddMeasurements () {
     showToast("{You_must_save_this_tabgroup_first}");
     return;
   }
-  parentTabgroup = tabgroup;
+  parentTabgroup   = tabgroup;
+  parentTabgroup__ = tabgroup;
   newMeasurements();
 }
 
@@ -726,7 +881,7 @@ addNavigationButtons(String tabgroup) {
       "{New}";
     }
     actionOn() {
-      if(!isNull(getUuid(tabgroup))) {
+      if(isNull(getUuid(tabgroup))) {
           newRecord(tabgroup);
           showToast("{New_record_created}");
       } else {
@@ -929,6 +1084,7 @@ newBird(){
 
   setUuid(tabgroup, null);
   newTabGroup(tabgroup);
+  populateAuthorAndTimestamp(tabgroup);
 
   copyLocationName();
   copyBirdSpecies();
@@ -941,6 +1097,8 @@ duplicateBird(){
 
   disableAutoSave(tabgroup);
 
+
+  clearGpsInTabGroup(tabgroup);
 
   populateCameraPictureGallery("Bird/Comments/Attach_Photograph", new ArrayList());
 
@@ -1002,6 +1160,8 @@ newMeasurements(){
 
   setUuid(tabgroup, null);
   newTabGroup(tabgroup);
+  populateAuthorAndTimestamp(tabgroup);
+
   setMeasurementsTimestamp();
   setMeasurementsBandNumber();
   setMeasurementsBandNumberMeasure();
@@ -1013,6 +1173,8 @@ duplicateMeasurements(){
 
   disableAutoSave(tabgroup);
 
+
+  clearGpsInTabGroup(tabgroup);
 
 
 
@@ -1143,10 +1305,14 @@ addOnEvent("Bird/Bird_Info/Take_From_GPS", "click", "takePoint(\"Bird\")");
 
 /* Takes the current point using gps. */
 takePoint(String tabgroup) {
+  Map tabgroupToTabRef = new HashMap();
+  tabgroupToTabRef.put("Bird", "Bird/Bird_Info/");
+
   String archEntType = tabgroup.replaceAll("_", " ");
   String currentUuid = getUuid(tabgroup);
   if (isNull(currentUuid)){
     showToast("Please enter data first and let a save occur.");
+    return;
   }
 
   Object position = getGPSPosition();
@@ -1165,10 +1331,10 @@ takePoint(String tabgroup) {
   ArrayList geolist = new ArrayList();
   geolist.add(samplePoint);
 
-  attributes = createAttributeList();
-  attributes.add(createEntityAttribute("Latitude", "Accuracy: "+getGPSEstimatedAccuracy(), null, null, null));
+  String accuracy = "" + getGPSEstimatedAccuracy();
+  setFieldValue(tabgroupToTabRef.get(tabgroup) + "Accuracy", accuracy);
 
-  saveArchEnt(currentUuid, archEntType, geolist, attributes, new SaveCallback() {
+  saveArchEnt(currentUuid, archEntType, geolist, null, new SaveCallback() {
     onSave(uuid, newRecord) {
       print("[takePoint()] Added geometry: " + geolist);
       fillInGPS(tabgroup);
@@ -1202,6 +1368,25 @@ fillInGPS(String tabgroup) {
       setFieldValue(tabgroupToTabRef.get(tabgroup) + "Northing"  , result.get(3));
     }
   });
+}
+
+clearGpsInTabGroup(String tabgroup) {
+  Map tabgroupToTabRef = new HashMap();
+  tabgroupToTabRef.put("Bird", "Bird/Bird_Info/");
+
+
+  String tabRef = tabgroupToTabRef.get(tabgroup);
+  if (isNull(tabRef)) return;
+
+  clearGpsInTab(tabRef);
+}
+
+clearGpsInTab(String tabRef) {
+  setFieldValue(tabRef + "Accuracy"  , "");
+  setFieldValue(tabRef + "Latitude"  , "");
+  setFieldValue(tabRef + "Longitude" , "");
+  setFieldValue(tabRef + "Easting"   , "");
+  setFieldValue(tabRef + "Northing"  , "");
 }
 
 /******************************************************************************/
@@ -1307,10 +1492,11 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
 
   startInternalGPS();
 
-/********************* /Start/Main/* DROPDOWN POPULATION **********************/
-  makeVocab("DropDown", "Start/Main/Band_Number",   "Band Number");
-  makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
-  makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
+/**************************** DROPDOWN POPULATION *****************************/
+  makeVocab("DropDown", "Start/Main/Band_Number",           "Band Number");
+  makeVocab("DropDown", "Start/Search_Birds/Band_Number_1", "Band Number");
+  makeVocab("DropDown", "Start/Main/Bird_Species",          "Bird Species");
+  makeVocab("DropDown", "Start/Main/Location_Name",         "Location Name");
 
 /****************************** LOCATION COPYING ******************************/
   addOnEvent("Start", "show", "loadLocationName()");
@@ -1408,11 +1594,11 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
   }
 
 /*************************** CHRONOLOGICAL SAMPLING ***************************/
-  addOnEvent(
-      "Start/Main/Take_Next_Birds_Measurements",
-      "click",
-      "takeNextMeasurementsBird()"
-  );
+  // addOnEvent(
+  //     "Start/Main/Take_Next_Birds_Measurements",
+  //     "click",
+  //     "takeNextMeasurementsBird()"
+  // );
 
   // Effectively, disables the "take next bird's measurement" button in the nav
   // bar when the user navigates away from the Measurements tab group. So this
@@ -1458,6 +1644,90 @@ addOnEvent("Bird/Measurements/List_of_Measurements", "click", "loadEntity()");
         }
       }
     });
+  }
+
+/************************ BIRDS TO MEASURE POPULATION *************************/
+  addOnEvent(
+      "Start/To_Measure/Birds_to_Measure",
+      "click",
+      "loadEntity()"
+  );
+  addOnEvent(
+      "Start/To_Measure",
+      "show",
+      "populateBirdsToMeasure()"
+  );
+
+  populateBirdsToMeasure() {
+    String refBirdsToMeasure = "Start/To_Measure/Birds_to_Measure";
+
+    q  = " SELECT uuid, response";
+    q += "   FROM latestNonDeletedArchEntFormattedIdentifiers";
+    q += "  WHERE aenttypename = 'Bird'";
+    q += "    AND uuid NOT IN (";
+    q += " ";
+    q += "        SELECT uuid";
+    q += "          FROM latestnondeletedaentreln";
+    q += "          JOIN latestnondeletedrelationship USING (relationshipid)";
+    q += "          JOIN relntype USING (relntypeid)";
+    q += "         WHERE relntypename = 'Bird - Measurements'";
+    q += "           AND aentrelntimestamp > datetime('now', '-1 minute')";
+    q += " ";
+    q += "        );";
+
+    fetchAll(q, new FetchCallback() {
+      onFetch(result) {
+        populateList(refBirdsToMeasure, result);
+      }
+    });
+  }
+
+/************************** SEARCHING BY BAND NUMBER **************************/
+  addOnEvent(
+      "Start/Search_Birds",
+      "show",
+      "searchByBandNumber()"
+  );
+  addOnEvent(
+      "Start/Search_Birds/Search",
+      "click",
+      "searchByBandNumber()"
+  );
+  addOnEvent(
+      "Start/Search_Birds/Existing_Birds",
+      "click",
+      "loadEntity()"
+  );
+
+  searchByBandNumber() {
+    String refBandNumber        = "Start/Search_Birds/Band_Number_1";
+    String refBandNumberMeasure = "Start/Search_Birds/Band_Number_Measure_1";
+
+    String refExistingBirds     = "Start/Search_Birds/Existing_Birds";
+
+    String bandNumber           = getFieldValue(refBandNumber       );
+    String bandNumberMeasure    = getFieldValue(refBandNumberMeasure);
+
+    q  = " SELECT uuid, response";
+    q += "   FROM latestNonDeletedArchEntFormattedIdentifiers";
+    q += "  WHERE uuid IN (SELECT uuid";
+    q += "                   FROM latestNonDeletedaentvalue";
+    q += "                   JOIN attributekey USING (attributeid)";
+    q += "                  WHERE attributename = 'Band Number'";
+    q += "                    AND vocabid = {bandNumber}";
+    q += "                    AND measure LIKE '{bandNumberMeasure}'||'%'";
+    q += "                 )";
+    q += "  ORDER BY response;";
+    q  = replaceFirst(q, "{bandNumber}",        bandNumber       );
+    q  = replaceFirst(q, "{bandNumberMeasure}", bandNumberMeasure);
+
+    FetchCallback cbPopulate = new FetchCallback() {
+      onFetch(result) {
+        populateList(refExistingBirds, result);
+      }
+    };
+
+    fetchAll(q, cbPopulate);
   }
 
 /***************************** (SOME) VALIDATION ******************************/

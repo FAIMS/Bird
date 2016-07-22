@@ -8,27 +8,21 @@ module/ui_schema.xml
 
 cd module
 
-string="
-newMeasurements(){
-  String tabgroup = \"Measurements\";
+string="(newMeasurements\\(\\){((?!\\n}).)+)"
+replacement="\\1
 
-
-  setUuid(tabgroup, null);
-  newTabGroup(tabgroup);
-
-}"
-replacement="
-newMeasurements(){
-  String tabgroup = \"Measurements\";
-
-
-  setUuid(tabgroup, null);
-  newTabGroup(tabgroup);
   setMeasurementsTimestamp();
   setMeasurementsBandNumber();
-  setMeasurementsBandNumberMeasure();
-}"
-perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
+  setMeasurementsBandNumberMeasure();"
+perl -0777 -i.original -pe "s/$string/$replacement/igs" ui_logic.bsh
+
+string="(newBird\\(\\){((?!\\n}).)+)"
+replacement="\\1
+
+  copyLocationName();
+  copyBirdSpecies();
+  copyBandNumber();"
+perl -0777 -i.original -pe "s/$string/$replacement/igs" ui_logic.bsh
 
 string="  if (tabgroupsToValidate.contains(tabgroup)) {"
 replacement="  
@@ -48,27 +42,6 @@ perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
 string="  removeNavigationButton(\"validate\");"
 replacement="  removeNavigationButton(\"measure\");
   removeNavigationButton(\"validate\");"
-perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
-
-string="newBird(){
-  String tabgroup = \"Bird\";
-
-
-  setUuid(tabgroup, null);
-  newTabGroup(tabgroup);
-
-}"
-replacement="newBird(){
-  String tabgroup = \"Bird\";
-
-
-  setUuid(tabgroup, null);
-  newTabGroup(tabgroup);
-
-  copyLocationName();
-  copyBirdSpecies();
-  copyBandNumber();
-}"
 perl -0777 -i.original -pe "s/\\Q$string/$replacement/igs" ui_logic.bsh
 
 rm ui_logic.bsh.original

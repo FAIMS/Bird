@@ -27,8 +27,32 @@
               <Bird_Species/>
               <Location_Name/>
               <Create_Bird/>
-              <Take_Next_Birds_Measurements/>
             </Main>
+            <!--WARNING:  __                                                        -->
+            <!--WARNING: /  \        _____________________________________________  -->
+            <!--WARNING: |  |       /                                             \ -->
+            <!--WARNING: @  @       | It looks like you are implementing a search | -->
+            <!--WARNING: || ||   ___| feature. Would you like help? (You can use  | -->
+            <!--WARNING: || ||  /   | the built-in "search" tag here to add a tab | -->
+            <!--WARNING: |\_/|      | which searches all arch-ents.)              | -->
+            <!--WARNING: \___/      \_____________________________________________/ -->
+            <Search_Birds>
+              <Colgroup_0>
+                <Col_0>
+                  <Band_Number_1/>
+                </Col_0>
+                <Col_1>
+                  <Band_Number_Measure_1/>
+                </Col_1>
+                <Col_2>
+                  <Search/>
+                </Col_2>
+              </Colgroup_0>
+              <Existing_Birds/>
+            </Search_Birds>
+            <To_Measure>
+              <Birds_to_Measure/>
+            </To_Measure>
             <Search>
               <Colgroup_0>
                 <Col_0>
@@ -51,16 +75,25 @@
               <Band_Number_Measure/>
               <Bird_Species/>
               <Location_Name/>
-              <Colgroup_GPS>
+              <Colgroup_GPS_0>
                 <Col_0>
                   <Latitude/>
-                  <Northing/>
                 </Col_0>
                 <Col_1>
                   <Longitude/>
+                </Col_1>
+              </Colgroup_GPS_0>
+              <Colgroup_GPS_1>
+                <Col_0>
+                  <Northing/>
+                </Col_0>
+                <Col_1>
                   <Easting/>
                 </Col_1>
-              </Colgroup_GPS>
+                <Col_2>
+                  <Accuracy/>
+                </Col_2>
+              </Colgroup_GPS_1>
               <Take_From_GPS/>
               <Nest_ID/>
               <Chick_ID/>
@@ -69,8 +102,8 @@
               <How_Caught/>
               <Capture_Status/>
               <Bill_Colour/>
-              <Timestamp/>
-              <Author/>
+              <timestamp/>
+              <author/>
             </Bird_Info>
             <Measurements>
               <Add_Measurements/>
@@ -182,9 +215,51 @@
         <trigger ref="Create_Bird">
           <label>{Create_Bird}</label>
         </trigger>
-        <trigger ref="Take_Next_Birds_Measurements">
-          <label>{Take_Next_Bird_s_Measurements}</label>
-        </trigger>
+      </group>
+      <group ref="Search_Birds" faims_scrollable="false">
+        <label>{Birds}</label>
+        <group ref="Colgroup_0" faims_style="orientation">
+          <label/>
+          <group ref="Col_0" faims_style="even">
+            <label/>
+            <select1 ref="Band_Number_1">
+              <label>{Band_Number}</label>
+              <item>
+                <label>Options not loaded</label>
+                <value>0</value>
+              </item>
+            </select1>
+          </group>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input ref="Band_Number_Measure_1">
+              <label>{Band_Number_Measure}</label>
+            </input>
+          </group>
+          <group ref="Col_2" faims_style="even">
+            <label/>
+            <trigger ref="Search">
+              <label>{Search}</label>
+            </trigger>
+          </group>
+        </group>
+        <select1 appearance="compact" ref="Existing_Birds">
+          <label>{Existing_Birds}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
+      </group>
+      <group ref="To_Measure" faims_scrollable="false">
+        <label>{To_Measure}</label>
+        <select1 appearance="compact" ref="Birds_to_Measure">
+          <label>{Birds_to_Measure}</label>
+          <item>
+            <label>Options not loaded</label>
+            <value>0</value>
+          </item>
+        </select1>
       </group>
       <group ref="Search" faims_scrollable="false">
         <label>{search}</label>
@@ -241,7 +316,6 @@
         </input>
         <select1 faims_attribute_type="vocab" ref="Bird_Species" faims_attribute_name="Bird Species">
           <label>{Bird_Species}</label>
-          <!--WARNING: No type t was given for this view; assuming it is a dropdown-->
           <item>
             <label>Options not loaded</label>
             <value>0</value>
@@ -249,30 +323,44 @@
         </select1>
         <select1 faims_attribute_type="vocab" ref="Location_Name" faims_attribute_name="Location Name">
           <label>{Location_Name}</label>
-          <!--WARNING: No type t was given for this view; assuming it is a dropdown-->
           <item>
             <label>Options not loaded</label>
             <value>0</value>
           </item>
         </select1>
-        <group ref="Colgroup_GPS" faims_style="orientation">
+        <group ref="Colgroup_GPS_0" faims_style="orientation">
           <label/>
           <group ref="Col_0" faims_style="even">
             <label/>
-            <input ref="Latitude" faims_attribute_name="Latitude" faims_attribute_type="measure" faims_read_only="true">
+            <input ref="Latitude" faims_attribute_name="Latitude" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
               <label>{Latitude}</label>
             </input>
-            <input ref="Northing" faims_attribute_name="Northing" faims_attribute_type="measure" faims_read_only="true">
+          </group>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input ref="Longitude" faims_attribute_name="Longitude" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+              <label>{Longitude}</label>
+            </input>
+          </group>
+        </group>
+        <group ref="Colgroup_GPS_1" faims_style="orientation">
+          <label/>
+          <group ref="Col_0" faims_style="even">
+            <label/>
+            <input ref="Northing" faims_attribute_name="Northing" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
               <label>{Northing}</label>
             </input>
           </group>
           <group ref="Col_1" faims_style="even">
             <label/>
-            <input ref="Longitude" faims_attribute_name="Longitude" faims_attribute_type="measure" faims_read_only="true">
-              <label>{Longitude}</label>
-            </input>
-            <input ref="Easting" faims_attribute_name="Easting" faims_attribute_type="measure" faims_read_only="true">
+            <input ref="Easting" faims_attribute_name="Easting" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
               <label>{Easting}</label>
+            </input>
+          </group>
+          <group ref="Col_2" faims_style="even">
+            <label/>
+            <input ref="Accuracy" faims_attribute_name="Accuracy" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+              <label>{Accuracy__m_}</label>
             </input>
           </group>
         </group>
@@ -281,11 +369,9 @@
         </trigger>
         <input faims_attribute_type="measure" ref="Nest_ID" faims_attribute_name="Nest ID" faims_certainty="false">
           <label>{Nest_ID}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <input faims_attribute_type="measure" ref="Chick_ID" faims_attribute_name="Chick ID" faims_certainty="false">
           <label>{Chick_ID}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <select1 appearance="full" faims_attribute_type="vocab" ref="Age" faims_attribute_name="Age" faims_style_class="required">
           <label>{Age}</label>
@@ -322,10 +408,10 @@
             <value>0</value>
           </item>
         </select1>
-        <input ref="Timestamp" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+        <input ref="timestamp" faims_attribute_name="Bird timestamp" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
           <label>{timestamp}</label>
         </input>
-        <input ref="Author" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+        <input ref="author" faims_attribute_name="Bird author" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
           <label>{author}</label>
         </input>
       </group>
@@ -346,7 +432,6 @@
         <label>{Comments}</label>
         <input faims_attribute_type="measure" ref="ID_Pit_Tag" faims_attribute_name="ID Pit Tag" faims_certainty="false" faims_style_class="required">
           <label>{ID_Pit_Tag}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <select1 type="image" faims_attribute_type="vocab" ref="Colour_Band" faims_attribute_name="Colour Band" faims_certainty="false" faims_style_class="required">
           <label>{Colour_Band}</label>
@@ -357,7 +442,6 @@
         </select1>
         <input faims_attribute_type="measure" ref="Comments" faims_attribute_name="Comments" faims_certainty="false" faims_style_class="required">
           <label>{Comments}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <select faims_attribute_type="vocab" ref="Sample" faims_attribute_name="Sample" faims_certainty="false" faims_style_class="required">
           <label>{Sample}</label>
@@ -384,11 +468,9 @@
         <label>{Measurements}</label>
         <input faims_attribute_type="measure" ref="Timestamp" faims_attribute_name="Timestamp" faims_read_only="true">
           <label>{Timestamp}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <select1 faims_attribute_type="vocab" ref="Band_Number" faims_attribute_name="Band Number" faims_read_only="true">
           <label>{Band_Number}</label>
-          <!--WARNING: No type t was given for this view; assuming it is a dropdown-->
           <item>
             <label>Options not loaded</label>
             <value>0</value>
@@ -396,15 +478,12 @@
         </select1>
         <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number" faims_read_only="true" faims_certainty="false" faims_annotation="false">
           <label>{Band_Number_Measure}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <input faims_attribute_type="measure" ref="Tarsus_Length" faims_attribute_name="Tarsus Length" faims_style_class="required">
           <label>{Tarsus_Length}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <input faims_attribute_type="measure" ref="Head_Length" faims_attribute_name="Head Length" faims_style_class="required">
           <label>{Head_Length}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <group ref="Colgroup_0" faims_style="orientation">
           <label/>
@@ -412,28 +491,23 @@
             <label/>
             <input faims_attribute_type="measure" ref="Bill_Length" faims_attribute_name="Bill Length" faims_style_class="required">
               <label>{Bill_Length}</label>
-              <!--WARNING: No type t was given for this view; assuming it is an input-->
             </input>
           </group>
           <group ref="Col_1" faims_style="even">
             <label/>
             <input faims_attribute_type="measure" ref="Bill_Height" faims_attribute_name="Bill Height" faims_style_class="required">
               <label>{Bill_Height}</label>
-              <!--WARNING: No type t was given for this view; assuming it is an input-->
             </input>
           </group>
         </group>
         <input faims_attribute_type="measure" ref="Wing_Length" faims_attribute_name="Wing Length" faims_style_class="required">
           <label>{Wing_Length}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <input faims_attribute_type="measure" ref="Tail_Length" faims_attribute_name="Tail Length" faims_style_class="required">
           <label>{Tail_Length}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
         <input faims_attribute_type="measure" ref="Mass" faims_attribute_name="Mass" faims_style_class="required">
           <label>{Mass}</label>
-          <!--WARNING: No type t was given for this view; assuming it is an input-->
         </input>
       </group>
     </group>

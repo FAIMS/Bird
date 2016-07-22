@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--@POSTPROC: ./postproc.sh-->
-<module suppressWarnings="false">
+<module suppressWarnings="true">
 
 <User f="nodata">
   <User f="noscroll">
@@ -20,10 +20,23 @@
       <!--Needs to be populated manually in logic-->
     </Location_Name>
     <Create_Bird t="button" l="Bird"/>
-    <Take_Next_Birds_Measurements t="button">
-      Take Next Bird's Measurements
-    </Take_Next_Birds_Measurements>
   </Main>
+  <Search_Birds f="noscroll">
+    Birds
+    <cols>
+      <Band_Number_1 t="dropdown">
+        Band Number
+      </Band_Number_1>
+      <Band_Number_Measure_1>
+        Band Number Measure
+      </Band_Number_Measure_1>
+      <Search        t="button"/>
+    </cols>
+    <Existing_Birds t="list"/>
+  </Search_Birds>
+  <To_Measure f="noscroll">
+    <Birds_to_Measure t="list"/>
+  </To_Measure>
   <search>
     <!-- TODO: Re-implement with code copied from PAZC or Boncuklu. Should be
          able to filter using Bird_Species and Location_Name.-->
@@ -38,7 +51,8 @@
     <Band_Number t="dropdown" f="id notnull nocertainty">
       <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
       <str>
-        <fmt>$1$2</fmt>
+        <pos>1</pos>
+        <fmt>$1$2 - </fmt>
       </str>
       <opts>
         <opt>026</opt>
@@ -50,7 +64,11 @@
       <!--We'll link this to the data schema as a measure in the-->
       <!--post-processing step.-->
     </Band_Number_Measure>
-    <Bird_Species>
+    <Bird_Species f="id">
+      <str>
+        <pos>2</pos>
+        <fmt>$1 - </fmt>
+      </str>
       <opts>
         <opt>zebra finch</opt>
         <opt>long-tailed finch</opt>
@@ -58,7 +76,11 @@
         <opt>other</opt>
       </opts>
     </Bird_Species>
-    <Location_Name>
+    <Location_Name f="id">
+      <str>
+        <pos>3</pos>
+        <fmt>$1</fmt>
+      </str>
       <opts>
         <opt>Gap Hills</opt>
         <opt>Saloon</opt>
@@ -106,31 +128,30 @@
     <Bill_Colour t="picture">
       <opts>
         <opt>
-          zebra finch
-          <opt>yellow</opt>
-          <opt>yellow orange</opt>
-          <opt>orange</opt>
-          <opt>orange red</opt>
-          <opt>red</opt>
+          Zebra Finch
+          <opt>Yellow</opt>
+          <opt>Yellow Orange</opt>
+          <opt>Orange</opt>
+          <opt>Orange Red</opt>
+          <opt>Red</opt>
         </opt>
         <opt>
-          long-tailed finch
-          <opt>yellow</opt>
-          <opt>yellow orange</opt>
-          <opt>orange</opt>
-          <opt>orange red</opt>
-          <opt>red</opt>
+          Long-Tailed Finch
+          <opt>Yellow</opt>
+          <opt>Yellow Orange</opt>
+          <opt>Orange</opt>
+          <opt>Orange Red</opt>
+          <opt>Red</opt>
         </opt>
         <opt>
-          house sparrow
-          <opt>yellow (with flange)</opt>
-          <opt>yellow</opt>
-          <opt>grey</opt>
-          <opt>black</opt>
+          House Sparrow
+          <opt>Yellow (with Flange)</opt>
+          <opt>Yellow</opt>
+          <opt>Grey</opt>
+          <opt>Black</opt>
         </opt>
-        <opt>
-          other
-        </opt>
+        <opt>Other</opt>
+        <opt>No Observation</opt>
       </opts>
     </Bill_Colour>
     <timestamp/>
@@ -157,8 +178,8 @@
         <opt>Other</opt>
       </opts>
     </Colour_Band>
-    <Comments            f="   notnull nocertainty"/>
-    <Sample t="checkbox" f="id notnull nocertainty">
+    <Comments            f="notnull nocertainty"/>
+    <Sample t="checkbox" f="notnull nocertainty">
       <str>
         <app>; </app>
       </str>
@@ -176,8 +197,17 @@
 
 <Measurements>
   <Measurements>
-    <Timestamp           f="id readonly"/>
+    <Timestamp           f="id readonly">
+      <str>
+        <pos>2</pos>
+        <fmt>$2</fmt>
+      </str>
+    </Timestamp>
     <Band_Number         f="id readonly">
+      <str>
+        <pos>1</pos>
+        <fmt>$1$2 - </fmt>
+      </str>
       <opts>
         <opt>026</opt>
         <opt>027</opt>
@@ -203,10 +233,11 @@
 <logic><![CDATA[
   startInternalGPS();
 
-/********************* /Start/Main/* DROPDOWN POPULATION **********************/
-  makeVocab("DropDown", "Start/Main/Band_Number",   "Band Number");
-  makeVocab("DropDown", "Start/Main/Bird_Species",  "Bird Species");
-  makeVocab("DropDown", "Start/Main/Location_Name", "Location Name");
+/**************************** DROPDOWN POPULATION *****************************/
+  makeVocab("DropDown", "Start/Main/Band_Number",           "Band Number");
+  makeVocab("DropDown", "Start/Search_Birds/Band_Number_1", "Band Number");
+  makeVocab("DropDown", "Start/Main/Bird_Species",          "Bird Species");
+  makeVocab("DropDown", "Start/Main/Location_Name",         "Location Name");
 
 /****************************** LOCATION COPYING ******************************/
   addOnEvent("Start", "show", "loadLocationName()");
@@ -304,11 +335,11 @@
   }
 
 /*************************** CHRONOLOGICAL SAMPLING ***************************/
-  addOnEvent(
-      "Start/Main/Take_Next_Birds_Measurements",
-      "click",
-      "takeNextMeasurementsBird()"
-  );
+  // addOnEvent(
+  //     "Start/Main/Take_Next_Birds_Measurements",
+  //     "click",
+  //     "takeNextMeasurementsBird()"
+  // );
 
   // Effectively, disables the "take next bird's measurement" button in the nav
   // bar when the user navigates away from the Measurements tab group. So this
@@ -354,6 +385,90 @@
         }
       }
     });
+  }
+
+/************************ BIRDS TO MEASURE POPULATION *************************/
+  addOnEvent(
+      "Start/To_Measure/Birds_to_Measure",
+      "click",
+      "loadEntity()"
+  );
+  addOnEvent(
+      "Start/To_Measure",
+      "show",
+      "populateBirdsToMeasure()"
+  );
+
+  populateBirdsToMeasure() {
+    String refBirdsToMeasure = "Start/To_Measure/Birds_to_Measure";
+
+    q  = " SELECT uuid, response";
+    q += "   FROM latestNonDeletedArchEntFormattedIdentifiers";
+    q += "  WHERE aenttypename = 'Bird'";
+    q += "    AND uuid NOT IN (";
+    q += " ";
+    q += "        SELECT uuid";
+    q += "          FROM latestnondeletedaentreln";
+    q += "          JOIN latestnondeletedrelationship USING (relationshipid)";
+    q += "          JOIN relntype USING (relntypeid)";
+    q += "         WHERE relntypename = 'Bird - Measurements'";
+    q += "           AND aentrelntimestamp > datetime('now', '-1 minute')";
+    q += " ";
+    q += "        );";
+
+    fetchAll(q, new FetchCallback() {
+      onFetch(result) {
+        populateList(refBirdsToMeasure, result);
+      }
+    });
+  }
+
+/************************** SEARCHING BY BAND NUMBER **************************/
+  addOnEvent(
+      "Start/Search_Birds",
+      "show",
+      "searchByBandNumber()"
+  );
+  addOnEvent(
+      "Start/Search_Birds/Search",
+      "click",
+      "searchByBandNumber()"
+  );
+  addOnEvent(
+      "Start/Search_Birds/Existing_Birds",
+      "click",
+      "loadEntity()"
+  );
+
+  searchByBandNumber() {
+    String refBandNumber        = "Start/Search_Birds/Band_Number_1";
+    String refBandNumberMeasure = "Start/Search_Birds/Band_Number_Measure_1";
+
+    String refExistingBirds     = "Start/Search_Birds/Existing_Birds";
+
+    String bandNumber           = getFieldValue(refBandNumber       );
+    String bandNumberMeasure    = getFieldValue(refBandNumberMeasure);
+
+    q  = " SELECT uuid, response";
+    q += "   FROM latestNonDeletedArchEntFormattedIdentifiers";
+    q += "  WHERE uuid IN (SELECT uuid";
+    q += "                   FROM latestNonDeletedaentvalue";
+    q += "                   JOIN attributekey USING (attributeid)";
+    q += "                  WHERE attributename = 'Band Number'";
+    q += "                    AND vocabid = {bandNumber}";
+    q += "                    AND measure LIKE '{bandNumberMeasure}'||'%'";
+    q += "                 )";
+    q += "  ORDER BY response;";
+    q  = replaceFirst(q, "{bandNumber}",        bandNumber       );
+    q  = replaceFirst(q, "{bandNumberMeasure}", bandNumberMeasure);
+
+    FetchCallback cbPopulate = new FetchCallback() {
+      onFetch(result) {
+        populateList(refExistingBirds, result);
+      }
+    };
+
+    fetchAll(q, cbPopulate);
   }
 
 /***************************** (SOME) VALIDATION ******************************/
