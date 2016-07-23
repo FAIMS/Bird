@@ -20,9 +20,6 @@
       <!--Needs to be populated manually in logic-->
     </Location_Name>
     <Create_Bird t="button" l="Bird"/>
-    <Take_Next_Birds_Measurements t="button">
-      Take Next Measurement
-    </Take_Next_Birds_Measurements>
   </Main>
   <Search_Birds f="noscroll">
     Birds
