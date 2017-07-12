@@ -8,22 +8,6 @@ module/ui_schema.xml
 
 cd module
 
-string="(newMeasurements\\(\\){((?!\\n}).)+)"
-replacement="\\1
-
-  setMeasurementsTimestamp();
-  setMeasurementsBandNumber();
-  setMeasurementsBandNumberMeasure();"
-perl -0777 -i.original -pe "s/$string/$replacement/igs" ui_logic.bsh
-
-string="(newBird\\(\\){((?!\\n}).)+)"
-replacement="\\1
-
-  copyLocationName();
-  copyBirdSpecies();
-  copyBandNumber();"
-perl -0777 -i.original -pe "s/$string/$replacement/igs" ui_logic.bsh
-
 string="  if (tabgroupsToValidate.contains(tabgroup)) {"
 replacement="  
   if (doAllowSamplingInNav) {

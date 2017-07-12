@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--@POSTPROC: ./postproc.sh-->
-<module suppressWarnings="true">
+<module test_mode="true">
 
 <User f="nodata">
   <User f="noscroll">
@@ -10,21 +10,15 @@
 
 <Start f="nodata">
   <Main>
-    <Band_Number t="dropdown">
-      <!--Needs to be populated manually in logic-->
-    </Band_Number>
-    <Bird_Species t="dropdown">
-      <!--Needs to be populated manually in logic-->
-    </Bird_Species>
-    <Location_Name t="dropdown">
-      <!--Needs to be populated manually in logic-->
-    </Location_Name>
+    <Band_Number   t="dropdown" f="persist" vp="Bird/Bird_Info/Band_Number"/>
+    <Bird_Species  t="dropdown" f="persist" vp="Bird/Bird_Info/Bird_Species"/>
+    <Location_Name t="dropdown" f="persist" vp="Bird/Bird_Info/Location_Name"/>
     <Create_Bird t="button" l="Bird"/>
   </Main>
   <Search_Birds f="noscroll">
     Birds
     <cols>
-      <Band_Number_1 t="dropdown">
+      <Band_Number_1 t="dropdown" vp="Bird/Bird_Info/Band_Number">
         Band Number
       </Band_Number_1>
       <Band_Number_Measure_1>
@@ -48,7 +42,7 @@
 
 <Bird>
   <Bird_Info>
-    <Band_Number t="dropdown" f="id notnull nocertainty">
+    <Band_Number t="dropdown" f="id notnull nocertainty" i="Start/Main/Band_Number">
       <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
       <str>
         <pos>1</pos>
@@ -64,7 +58,7 @@
       <!--We'll link this to the data schema as a measure in the-->
       <!--post-processing step.-->
     </Band_Number_Measure>
-    <Bird_Species f="id">
+    <Bird_Species f="id" i="Start/Main/Bird_Species">
       <str>
         <pos>2</pos>
         <fmt>$1 - </fmt>
@@ -76,7 +70,7 @@
         <opt>other</opt>
       </opts>
     </Bird_Species>
-    <Location_Name f="id">
+    <Location_Name f="id" i="Start/Main/Location_Name">
       <str>
         <pos>3</pos>
         <fmt>$1</fmt>
@@ -204,6 +198,7 @@
       </str>
     </Timestamp>
     <Band_Number         f="id readonly">
+      <desc>Copy in the alphanumeric code from the band attached to the bird</desc>
       <str>
         <pos>1</pos>
         <fmt>$1$2 - </fmt>
@@ -233,66 +228,11 @@
 <logic><![CDATA[
   startInternalGPS();
 
-/**************************** DROPDOWN POPULATION *****************************/
-  makeVocab("DropDown", "Start/Main/Band_Number",           "Band Number");
-  makeVocab("DropDown", "Start/Search_Birds/Band_Number_1", "Band Number");
-  makeVocab("DropDown", "Start/Main/Bird_Species",          "Bird Species");
-  makeVocab("DropDown", "Start/Main/Location_Name",         "Location Name");
-
-/****************************** LOCATION COPYING ******************************/
-  addOnEvent("Start", "show", "loadLocationName()");
-
-  loadLocationName() {
-    src = "Start/Main/Location_Name";
-    setFieldValueFromLocalSettings(src, src);
-  }
-
-  // Occurs upon Bird creation using @POSTPROC
-  copyLocationName() {
-    src = "Start/Main/Location_Name";
-    dst = "Bird/Bird_Info/Location_Name";
-    val = getFieldValue(src);
-
-    insertIntoLocalSettings(src, val);
-    setFieldValue(dst, val);
-  }
-/**************************** BIRD SPECIES COPYING ****************************/
-  addOnEvent("Start", "show", "loadBirdSpecies()");
-
-  loadBirdSpecies() {
-    src = "Start/Main/Bird_Species";
-    setFieldValueFromLocalSettings(src, src);
-  }
-
-  // Occurs upon Bird creation using @POSTPROC
-  copyBirdSpecies() {
-    src = "Start/Main/Bird_Species";
-    dst = "Bird/Bird_Info/Bird_Species";
-    val = getFieldValue(src);
-
-    insertIntoLocalSettings(src, val);
-    setFieldValue(dst, val);
-  }
-/**************************** BAND NUMBER COPYING *****************************/
-  addOnEvent("Start", "show", "loadBandNumber()");
-
-  loadBandNumber() {
-    src = "Start/Main/Band_Number";
-    setFieldValueFromLocalSettings(src, src);
-  }
-
-  // Occurs upon Bird creation using @POSTPROC
-  copyBandNumber() {
-    src = "Start/Main/Band_Number";
-    dst = "Bird/Bird_Info/Band_Number";
-    val = getFieldValue(src);
-
-    setFieldValue(dst, val);
-  }
-
 /************** DATE AND BAND NUMBER POPULATION FOR MEASUREMENTS **************/
-/* Implemented using @POSTPROC.                                               */
-/******************************************************************************/
+  addOnEvent("Measurements", "create", "setMeasurementsTimestamp()");
+  addOnEvent("Measurements", "create", "setMeasurementsBandNumber()");
+  addOnEvent("Measurements", "create", "setMeasurementsBandNumberMeasure()");
+
   setMeasurementsTimestamp() {
     ref     = "Measurements/Measurements/Timestamp";
     fmt     = "yyyy-MM-dd HH:mm:ss Z";

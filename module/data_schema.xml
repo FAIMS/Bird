@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <dataSchema>
   <RelationshipElement name="Bird - Measurements" type="hierarchical">
     <description>A 1-to-n relationship between the parent and its children, respectively.</description>
@@ -6,293 +6,298 @@
     <child>Child Of</child>
   </RelationshipElement>
   <ArchaeologicalElement name="Bird">
-    <description/>
-    <property name="Band Number" isIdentifier="true" type="vocab">
+    <description></description>
+    <property name="Band Number" type="vocab" isIdentifier="true">
       <description>Copy in the alphanumeric code from the band attached to the bird</description>
-      <formatString><![CDATA[$1$2 - ]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>$1$2 - </formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{026}
-<description/></term>
+<description></description></term>
         <term>{027}
-<description/></term>
+<description></description></term>
         <term>{036}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
-    <property name="Bird Species" isIdentifier="true" type="vocab">
-      <description/>
-      <formatString><![CDATA[$1 - ]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+    <property name="Bird Species" type="vocab" isIdentifier="true">
+      <description></description>
+      <formatString>$1 - </formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{zebra_finch}
-<description/></term>
+<description></description></term>
         <term>{long_tailed_finch}
-<description/></term>
+<description></description></term>
         <term>{house_sparrow}
-<description/></term>
+<description></description></term>
         <term>{other}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
-    <property name="Location Name" isIdentifier="true" type="vocab">
-      <description/>
-      <formatString><![CDATA[$1]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+    <property name="Location Name" type="vocab" isIdentifier="true">
+      <description></description>
+      <formatString>$1</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Gap_Hills}
-<description/></term>
+<description></description></term>
         <term>{Saloon}
-<description/></term>
+<description></description></term>
         <term>{Sandstone}
-<description/></term>
+<description></description></term>
         <term>{White_tank}
-<description/></term>
+<description></description></term>
         <term>{Old_Aviary}
-<description/></term>
+<description></description></term>
         <term>{New_Aviary}
-<description/></term>
+<description></description></term>
         <term>{W19G}
-<description/></term>
+<description></description></term>
         <term>{W19F}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
+    <property name="Latitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Longitude" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Northing" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Easting" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
+    <property name="Accuracy" type="measure">
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
+    </property>
     <property name="Nest ID" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Chick ID" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Age" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Pulli}
-<description/></term>
+<description></description></term>
         <term>{Juvenile}
-<description/></term>
+<description></description></term>
         <term>{Adult}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Sex" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Male}
-<description/></term>
+<description></description></term>
         <term>{Female}
-<description/></term>
+<description></description></term>
         <term>{Unknown}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="How Caught" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Trap}
-<description/></term>
+<description></description></term>
         <term>{Mist_net}
-<description/></term>
+<description></description></term>
         <term>{Nest}
-<description/></term>
+<description></description></term>
         <term>{Aviary}
-<description/></term>
+<description></description></term>
         <term>{Other}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Capture Status" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Recaptured}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Bill Colour" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Zebra_Finch}
-<description/><term>{Yellow}
-<description/></term><term>{Yellow_Orange}
-<description/></term><term>{Orange}
-<description/></term><term>{Orange_Red}
-<description/></term><term>{Red}
-<description/></term></term>
+<description></description><term>{Yellow}
+<description></description></term><term>{Yellow_Orange}
+<description></description></term><term>{Orange}
+<description></description></term><term>{Orange_Red}
+<description></description></term><term>{Red}
+<description></description></term></term>
         <term>{Long_Tailed_Finch}
-<description/><term>{Yellow}
-<description/></term><term>{Yellow_Orange}
-<description/></term><term>{Orange}
-<description/></term><term>{Orange_Red}
-<description/></term><term>{Red}
-<description/></term></term>
+<description></description><term>{Yellow}
+<description></description></term><term>{Yellow_Orange}
+<description></description></term><term>{Orange}
+<description></description></term><term>{Orange_Red}
+<description></description></term><term>{Red}
+<description></description></term></term>
         <term>{House_Sparrow}
-<description/><term>{Yellow__with_Flange_}
-<description/></term><term>{Yellow}
-<description/></term><term>{Grey}
-<description/></term><term>{Black}
-<description/></term></term>
+<description></description><term>{Yellow__with_Flange_}
+<description></description></term><term>{Yellow}
+<description></description></term><term>{Grey}
+<description></description></term><term>{Black}
+<description></description></term></term>
         <term>{Other}
-<description/></term>
+<description></description></term>
         <term>{No_Observation}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Bird timestamp" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Bird author" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="ID Pit Tag" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Colour Band" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{Red}
-<description/></term>
+<description></description></term>
         <term>{Green}
-<description/></term>
+<description></description></term>
         <term>{Black}
-<description/></term>
+<description></description></term>
         <term>{Dark_Blue}
-<description/></term>
+<description></description></term>
         <term>{Light_Blue}
-<description/></term>
+<description></description></term>
         <term>{Orange}
-<description/></term>
+<description></description></term>
         <term>{Yellow}
-<description/></term>
+<description></description></term>
         <term>{Purple}
-<description/></term>
+<description></description></term>
         <term>{White}
-<description/></term>
+<description></description></term>
         <term>{Brown}
-<description/></term>
+<description></description></term>
         <term>{Other}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Comments" type="measure">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Sample" type="vocab">
-      <description/>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[; ]]></appendCharacterString>
+      <description></description>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString>; </appendCharacterString>
       <lookup>
         <term>{Blood}
-<description/></term>
+<description></description></term>
         <term>{Feather}
-<description/></term>
+<description></description></term>
         <term>{Sperm}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
     <property name="Attach Photograph" type="file" file="true" thumbnail="true">
       <description>Take two pictures, one of head front, one of head side</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
-    </property>
-    <property name="Latitude" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
-    </property>
-    <property name="Longitude" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
-    </property>
-    <property name="Northing" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
-    </property>
-    <property name="Easting" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
-    </property>
-    <property name="Accuracy" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
   </ArchaeologicalElement>
   <ArchaeologicalElement name="Measurements">
-    <description/>
-    <property name="Band Number" isIdentifier="true" type="vocab">
-      <description/>
-      <formatString><![CDATA[$1$2 - ]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+    <description></description>
+    <property name="Band Number" type="vocab" isIdentifier="true">
+      <description>Copy in the alphanumeric code from the band attached to the bird</description>
+      <formatString>$1$2 - </formatString>
+      <appendCharacterString> - </appendCharacterString>
       <lookup>
         <term>{026}
-<description/></term>
+<description></description></term>
         <term>{027}
-<description/></term>
+<description></description></term>
         <term>{036}
-<description/></term>
+<description></description></term>
       </lookup>
     </property>
-    <property name="Timestamp" isIdentifier="true" type="measure">
-      <description/>
-      <formatString><![CDATA[$2]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+    <property name="Timestamp" type="measure" isIdentifier="true">
+      <description></description>
+      <formatString>$2</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Tarsus Length" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Head Length" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Bill Length" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Bill Height" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Wing Length" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Tail Length" type="measure">
       <description>mm</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
     <property name="Mass" type="measure">
       <description>grams</description>
-      <formatString><![CDATA[{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}]]></formatString>
-      <appendCharacterString><![CDATA[ - ]]></appendCharacterString>
+      <formatString>{{if $1 then $1}}{{if and($1, $2) then " " }}{{if $2 then $2}}{{if $3 then " ($3)"}}{{if between($4,0,0.49) then "??" elsif lessThan($4,1) then "?" }}</formatString>
+      <appendCharacterString> - </appendCharacterString>
     </property>
   </ArchaeologicalElement>
 </dataSchema>

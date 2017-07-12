@@ -1,10 +1,11 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <h:html xmlns:h="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:jr="http://openrosa.org/javarosa" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <h:head>
-    <h:title>Fill This In</h:title>
+    <h:title>FILL THIS IN</h:title>
     <model>
       <instance>
-        <faims id="Fill_This_In">
+        <faims id="FILL_THIS_IN">
+          <!--START: Style-->
           <style>
             <orientation>
               <orientation/>
@@ -16,6 +17,7 @@
               <layout_weight/>
             </large>
           </style>
+          <!--END: Style-->
           <User>
             <User>
               <Select_User/>
@@ -28,26 +30,18 @@
               <Location_Name/>
               <Create_Bird/>
             </Main>
-            <!--WARNING:  __                                                        -->
-            <!--WARNING: /  \        _____________________________________________  -->
-            <!--WARNING: |  |       /                                             \ -->
-            <!--WARNING: @  @       | It looks like you are implementing a search | -->
-            <!--WARNING: || ||   ___| feature. Would you like help? (You can use  | -->
-            <!--WARNING: || ||  /   | the built-in "search" tag here to add a tab | -->
-            <!--WARNING: |\_/|      | which searches all arch-ents.)              | -->
-            <!--WARNING: \___/      \_____________________________________________/ -->
             <Search_Birds>
-              <Colgroup_0>
-                <Col_0>
-                  <Band_Number_1/>
-                </Col_0>
+              <Colgroup_1>
                 <Col_1>
-                  <Band_Number_Measure_1/>
+                  <Band_Number_1/>
                 </Col_1>
                 <Col_2>
-                  <Search/>
+                  <Band_Number_Measure_1/>
                 </Col_2>
-              </Colgroup_0>
+                <Col_3>
+                  <Search/>
+                </Col_3>
+              </Colgroup_1>
               <Existing_Birds/>
             </Search_Birds>
             <To_Measure>
@@ -75,26 +69,26 @@
               <Band_Number_Measure/>
               <Bird_Species/>
               <Location_Name/>
-              <Colgroup_GPS_0>
-                <Col_0>
+              <Colgroup_1>
+                <Col_1>
                   <Latitude/>
-                </Col_0>
-                <Col_1>
-                  <Longitude/>
-                </Col_1>
-              </Colgroup_GPS_0>
-              <Colgroup_GPS_1>
-                <Col_0>
-                  <Northing/>
-                </Col_0>
-                <Col_1>
-                  <Easting/>
                 </Col_1>
                 <Col_2>
-                  <Accuracy/>
+                  <Longitude/>
                 </Col_2>
-              </Colgroup_GPS_1>
-              <Take_From_GPS/>
+              </Colgroup_1>
+              <Colgroup_2>
+                <Col_1>
+                  <Northing/>
+                </Col_1>
+                <Col_2>
+                  <Easting/>
+                </Col_2>
+                <Col_3>
+                  <Accuracy/>
+                </Col_3>
+              </Colgroup_2>
+              <Take_From_GPS_1/>
               <Nest_ID/>
               <Chick_ID/>
               <Age/>
@@ -102,8 +96,8 @@
               <How_Caught/>
               <Capture_Status/>
               <Bill_Colour/>
-              <timestamp/>
-              <author/>
+              <Bird_timestamp/>
+              <Bird_author/>
             </Bird_Info>
             <Measurements>
               <Add_Measurements/>
@@ -115,7 +109,7 @@
               <Comments/>
               <Sample/>
               <Attach_Photograph/>
-              <Button_Attach_Photograph/>
+              <Attach_Photograph_Button_1/>
             </Comments>
           </Bird>
           <Measurements>
@@ -125,34 +119,34 @@
               <Band_Number_Measure/>
               <Tarsus_Length/>
               <Head_Length/>
-              <Colgroup_0>
-                <Col_0>
-                  <Bill_Length/>
-                </Col_0>
+              <Colgroup_1>
                 <Col_1>
-                  <Bill_Height/>
+                  <Bill_Length/>
                 </Col_1>
-              </Colgroup_0>
+                <Col_2>
+                  <Bill_Height/>
+                </Col_2>
+              </Colgroup_1>
               <Wing_Length/>
               <Tail_Length/>
               <Mass/>
             </Measurements>
           </Measurements>
-          <logic/>
         </faims>
       </instance>
-      <bind type="decimal" nodeset="/faims/Bird/Bird_Info/Band_Number_Measure"/>
-      <bind type="decimal" nodeset="/faims/Bird/Comments/ID_Pit_Tag"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Tarsus_Length"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Head_Length"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Colgroup_0/Col_0/Bill_Length"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Colgroup_0/Col_1/Bill_Height"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Wing_Length"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Tail_Length"/>
-      <bind type="decimal" nodeset="/faims/Measurements/Measurements/Mass"/>
+      <bind nodeset="/faims/Bird/Bird_Info/Band_Number_Measure" type="decimal"/>
+      <bind nodeset="/faims/Bird/Comments/ID_Pit_Tag" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Tarsus_Length" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Head_Length" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Colgroup_1/Col_1/Bill_Length" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Colgroup_1/Col_2/Bill_Height" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Wing_Length" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Tail_Length" type="decimal"/>
+      <bind nodeset="/faims/Measurements/Measurements/Mass" type="decimal"/>
     </model>
   </h:head>
   <h:body>
+    <!--START: Style-->
     <group ref="style">
       <label/>
       <group ref="orientation">
@@ -174,15 +168,16 @@
         </input>
       </group>
     </group>
+    <!--END: Style-->
     <group ref="User">
       <label>{User}</label>
       <group ref="User" faims_scrollable="false">
         <label>{User}</label>
-        <select1 appearance="compact" ref="Select_User" faims_certainty="false" faims_annotation="false">
+        <select1 appearance="compact" ref="Select_User">
           <label>{Select_User}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
       </group>
@@ -195,21 +190,21 @@
           <label>{Band_Number}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
         <select1 ref="Bird_Species">
           <label>{Bird_Species}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
         <select1 ref="Location_Name">
           <label>{Location_Name}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
         <trigger ref="Create_Bird">
@@ -218,25 +213,25 @@
       </group>
       <group ref="Search_Birds" faims_scrollable="false">
         <label>{Birds}</label>
-        <group ref="Colgroup_0" faims_style="orientation">
+        <group ref="Colgroup_1" faims_style="orientation">
           <label/>
-          <group ref="Col_0" faims_style="even">
+          <group ref="Col_1" faims_style="even">
             <label/>
             <select1 ref="Band_Number_1">
               <label>{Band_Number}</label>
               <item>
                 <label>Options not loaded</label>
-                <value>0</value>
+                <value>Options not loaded</value>
               </item>
             </select1>
           </group>
-          <group ref="Col_1" faims_style="even">
+          <group ref="Col_2" faims_style="even">
             <label/>
             <input ref="Band_Number_Measure_1">
               <label>{Band_Number_Measure}</label>
             </input>
           </group>
-          <group ref="Col_2" faims_style="even">
+          <group ref="Col_3" faims_style="even">
             <label/>
             <trigger ref="Search">
               <label>{Search}</label>
@@ -247,7 +242,7 @@
           <label>{Existing_Birds}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
       </group>
@@ -257,21 +252,21 @@
           <label>{Birds_to_Measure}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
       </group>
       <group ref="Search" faims_scrollable="false">
-        <label>{search}</label>
-        <group faims_style="orientation" ref="Colgroup_0">
+        <label>{Search}</label>
+        <group ref="Colgroup_0" faims_style="orientation">
           <label/>
-          <group faims_style="even" ref="Col_0">
+          <group ref="Col_0" faims_style="even">
             <label/>
             <input ref="Search_Term">
               <label>{Search_Term}</label>
             </input>
           </group>
-          <group faims_style="large" ref="Col_1">
+          <group ref="Col_1" faims_style="large">
             <label/>
             <trigger ref="Search_Button">
               <label>{Search}</label>
@@ -293,10 +288,10 @@
           </item>
         </select1>
       </group>
-      <group ref="Map" faims_scrollable="false">
+      <group ref="Map">
         <label>{Map}</label>
         <input faims_map="true" ref="Map">
-          <label/>
+          <label>{Map}</label>
         </input>
       </group>
     </group>
@@ -304,115 +299,115 @@
       <label>{Bird}</label>
       <group ref="Bird_Info">
         <label>{Bird_Info}</label>
-        <select1 faims_attribute_type="vocab" ref="Band_Number" faims_attribute_name="Band Number" faims_certainty="false" faims_style_class="required">
+        <select1 faims_attribute_name="Band Number" faims_attribute_type="vocab" ref="Band_Number" faims_style_class="required">
           <label>{Band_Number}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number" faims_certainty="false" faims_annotation="false">
+        <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number">
           <label>{Band_Number_Measure}</label>
         </input>
-        <select1 faims_attribute_type="vocab" ref="Bird_Species" faims_attribute_name="Bird Species">
+        <select1 faims_attribute_name="Bird Species" faims_attribute_type="vocab" ref="Bird_Species">
           <label>{Bird_Species}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <select1 faims_attribute_type="vocab" ref="Location_Name" faims_attribute_name="Location Name">
+        <select1 faims_attribute_name="Location Name" faims_attribute_type="vocab" ref="Location_Name">
           <label>{Location_Name}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <group ref="Colgroup_GPS_0" faims_style="orientation">
+        <group ref="Colgroup_1" faims_style="orientation">
           <label/>
-          <group ref="Col_0" faims_style="even">
+          <group ref="Col_1" faims_style="even">
             <label/>
-            <input ref="Latitude" faims_attribute_name="Latitude" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
+            <input faims_attribute_name="Latitude" faims_attribute_type="measure" ref="Latitude" faims_read_only="true">
               <label>{Latitude}</label>
-            </input>
-          </group>
-          <group ref="Col_1" faims_style="even">
-            <label/>
-            <input ref="Longitude" faims_attribute_name="Longitude" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-              <label>{Longitude}</label>
-            </input>
-          </group>
-        </group>
-        <group ref="Colgroup_GPS_1" faims_style="orientation">
-          <label/>
-          <group ref="Col_0" faims_style="even">
-            <label/>
-            <input ref="Northing" faims_attribute_name="Northing" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-              <label>{Northing}</label>
-            </input>
-          </group>
-          <group ref="Col_1" faims_style="even">
-            <label/>
-            <input ref="Easting" faims_attribute_name="Easting" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-              <label>{Easting}</label>
             </input>
           </group>
           <group ref="Col_2" faims_style="even">
             <label/>
-            <input ref="Accuracy" faims_attribute_name="Accuracy" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-              <label>{Accuracy__m_}</label>
+            <input faims_attribute_name="Longitude" faims_attribute_type="measure" ref="Longitude" faims_read_only="true">
+              <label>{Longitude}</label>
             </input>
           </group>
         </group>
-        <trigger ref="Take_From_GPS">
+        <group ref="Colgroup_2" faims_style="orientation">
+          <label/>
+          <group ref="Col_1" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Northing" faims_attribute_type="measure" ref="Northing" faims_read_only="true">
+              <label>{Northing}</label>
+            </input>
+          </group>
+          <group ref="Col_2" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Easting" faims_attribute_type="measure" ref="Easting" faims_read_only="true">
+              <label>{Easting}</label>
+            </input>
+          </group>
+          <group ref="Col_3" faims_style="even">
+            <label/>
+            <input faims_attribute_name="Accuracy" faims_attribute_type="measure" ref="Accuracy" faims_read_only="true">
+              <label>{Accuracy}</label>
+            </input>
+          </group>
+        </group>
+        <trigger ref="Take_From_GPS_1">
           <label>{Take_From_GPS}</label>
         </trigger>
-        <input faims_attribute_type="measure" ref="Nest_ID" faims_attribute_name="Nest ID" faims_certainty="false">
+        <input faims_attribute_name="Nest ID" faims_attribute_type="measure" ref="Nest_ID">
           <label>{Nest_ID}</label>
         </input>
-        <input faims_attribute_type="measure" ref="Chick_ID" faims_attribute_name="Chick ID" faims_certainty="false">
+        <input faims_attribute_name="Chick ID" faims_attribute_type="measure" ref="Chick_ID">
           <label>{Chick_ID}</label>
         </input>
-        <select1 appearance="full" faims_attribute_type="vocab" ref="Age" faims_attribute_name="Age" faims_style_class="required">
+        <select1 appearance="full" faims_attribute_name="Age" faims_attribute_type="vocab" ref="Age" faims_style_class="required">
           <label>{Age}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <select1 appearance="full" faims_attribute_type="vocab" ref="Sex" faims_attribute_name="Sex" faims_certainty="false" faims_style_class="required">
+        <select1 appearance="full" faims_attribute_name="Sex" faims_attribute_type="vocab" ref="Sex" faims_style_class="required">
           <label>{Sex}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <select1 appearance="full" faims_attribute_type="vocab" ref="How_Caught" faims_attribute_name="How Caught">
+        <select1 appearance="full" faims_attribute_name="How Caught" faims_attribute_type="vocab" ref="How_Caught">
           <label>{How_Caught}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <select faims_attribute_type="vocab" ref="Capture_Status" faims_attribute_name="Capture Status" faims_certainty="false">
+        <select faims_attribute_name="Capture Status" faims_attribute_type="vocab" ref="Capture_Status">
           <label>{Capture_Status}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select>
-        <select1 type="image" faims_attribute_type="vocab" ref="Bill_Colour" faims_attribute_name="Bill Colour">
+        <select1 type="image" faims_attribute_name="Bill Colour" faims_attribute_type="vocab" ref="Bill_Colour">
           <label>{Bill_Colour}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <input ref="timestamp" faims_attribute_name="Bird timestamp" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-          <label>{timestamp}</label>
+        <input faims_attribute_name="Bird timestamp" faims_attribute_type="measure" ref="Bird_timestamp" faims_read_only="true">
+          <label>{Timestamp}</label>
         </input>
-        <input ref="author" faims_attribute_name="Bird author" faims_attribute_type="measure" faims_read_only="true" faims_annotation="false" faims_certainty="false">
-          <label>{author}</label>
+        <input faims_attribute_name="Bird author" faims_attribute_type="measure" ref="Bird_author" faims_read_only="true">
+          <label>{Author}</label>
         </input>
       </group>
       <group ref="Measurements" faims_scrollable="false">
@@ -420,45 +415,45 @@
         <trigger ref="Add_Measurements">
           <label>{Add_Measurements}</label>
         </trigger>
-        <select1 appearance="compact" ref="List_of_Measurements" faims_annotation="false" faims_certainty="false">
+        <select1 appearance="compact" ref="List_of_Measurements">
           <label>{List_of_Measurements}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
       </group>
       <group ref="Comments">
         <label>{Comments}</label>
-        <input faims_attribute_type="measure" ref="ID_Pit_Tag" faims_attribute_name="ID Pit Tag" faims_certainty="false" faims_style_class="required">
+        <input faims_attribute_name="ID Pit Tag" faims_attribute_type="measure" ref="ID_Pit_Tag" faims_style_class="required">
           <label>{ID_Pit_Tag}</label>
         </input>
-        <select1 type="image" faims_attribute_type="vocab" ref="Colour_Band" faims_attribute_name="Colour Band" faims_certainty="false" faims_style_class="required">
+        <select1 type="image" faims_attribute_name="Colour Band" faims_attribute_type="vocab" ref="Colour_Band" faims_style_class="required">
           <label>{Colour_Band}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <input faims_attribute_type="measure" ref="Comments" faims_attribute_name="Comments" faims_certainty="false" faims_style_class="required">
+        <input faims_attribute_name="Comments" faims_attribute_type="measure" ref="Comments" faims_style_class="required">
           <label>{Comments}</label>
         </input>
-        <select faims_attribute_type="vocab" ref="Sample" faims_attribute_name="Sample" faims_certainty="false" faims_style_class="required">
+        <select faims_attribute_name="Sample" faims_attribute_type="vocab" ref="Sample" faims_style_class="required">
           <label>{Sample}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select>
-        <select type="camera" faims_attribute_type="measure" faims_sync="true" ref="Attach_Photograph" faims_attribute_name="Attach Photograph">
+        <select faims_sync="true" type="camera" faims_attribute_name="Attach Photograph" faims_attribute_type="measure" ref="Attach_Photograph">
           <label>{Attach_Photograph}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select>
-        <trigger ref="Button_Attach_Photograph">
-          <label>{Button_Attach_Photograph}</label>
+        <trigger ref="Attach_Photograph_Button_1">
+          <label>{Attach_Photograph}</label>
         </trigger>
       </group>
     </group>
@@ -466,47 +461,47 @@
       <label>{Measurements}</label>
       <group ref="Measurements">
         <label>{Measurements}</label>
-        <input faims_attribute_type="measure" ref="Timestamp" faims_attribute_name="Timestamp" faims_read_only="true">
+        <input faims_attribute_name="Timestamp" faims_attribute_type="measure" ref="Timestamp" faims_read_only="true">
           <label>{Timestamp}</label>
         </input>
-        <select1 faims_attribute_type="vocab" ref="Band_Number" faims_attribute_name="Band Number" faims_read_only="true">
+        <select1 faims_attribute_name="Band Number" faims_attribute_type="vocab" ref="Band_Number" faims_read_only="true">
           <label>{Band_Number}</label>
           <item>
             <label>Options not loaded</label>
-            <value>0</value>
+            <value>Options not loaded</value>
           </item>
         </select1>
-        <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number" faims_read_only="true" faims_certainty="false" faims_annotation="false">
+        <input faims_attribute_type="measure" ref="Band_Number_Measure" faims_attribute_name="Band Number" faims_read_only="true">
           <label>{Band_Number_Measure}</label>
         </input>
-        <input faims_attribute_type="measure" ref="Tarsus_Length" faims_attribute_name="Tarsus Length" faims_style_class="required">
+        <input faims_attribute_name="Tarsus Length" faims_attribute_type="measure" ref="Tarsus_Length" faims_style_class="required">
           <label>{Tarsus_Length}</label>
         </input>
-        <input faims_attribute_type="measure" ref="Head_Length" faims_attribute_name="Head Length" faims_style_class="required">
+        <input faims_attribute_name="Head Length" faims_attribute_type="measure" ref="Head_Length" faims_style_class="required">
           <label>{Head_Length}</label>
         </input>
-        <group ref="Colgroup_0" faims_style="orientation">
+        <group ref="Colgroup_1" faims_style="orientation">
           <label/>
-          <group ref="Col_0" faims_style="even">
+          <group ref="Col_1" faims_style="even">
             <label/>
-            <input faims_attribute_type="measure" ref="Bill_Length" faims_attribute_name="Bill Length" faims_style_class="required">
+            <input faims_attribute_name="Bill Length" faims_attribute_type="measure" ref="Bill_Length" faims_style_class="required">
               <label>{Bill_Length}</label>
             </input>
           </group>
-          <group ref="Col_1" faims_style="even">
+          <group ref="Col_2" faims_style="even">
             <label/>
-            <input faims_attribute_type="measure" ref="Bill_Height" faims_attribute_name="Bill Height" faims_style_class="required">
+            <input faims_attribute_name="Bill Height" faims_attribute_type="measure" ref="Bill_Height" faims_style_class="required">
               <label>{Bill_Height}</label>
             </input>
           </group>
         </group>
-        <input faims_attribute_type="measure" ref="Wing_Length" faims_attribute_name="Wing Length" faims_style_class="required">
+        <input faims_attribute_name="Wing Length" faims_attribute_type="measure" ref="Wing_Length" faims_style_class="required">
           <label>{Wing_Length}</label>
         </input>
-        <input faims_attribute_type="measure" ref="Tail_Length" faims_attribute_name="Tail Length" faims_style_class="required">
+        <input faims_attribute_name="Tail Length" faims_attribute_type="measure" ref="Tail_Length" faims_style_class="required">
           <label>{Tail_Length}</label>
         </input>
-        <input faims_attribute_type="measure" ref="Mass" faims_attribute_name="Mass" faims_style_class="required">
+        <input faims_attribute_name="Mass" faims_attribute_type="measure" ref="Mass" faims_style_class="required">
           <label>{Mass}</label>
         </input>
       </group>

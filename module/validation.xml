@@ -1,76 +1,76 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ValidationSchema>
   <ArchaeologicalElement name="Bird">
     <property name="Band Number">
       <validator type="blankchecker">
-        <param value="vocab" type="field"/>
+        <param type="field" value="vocab"/>
       </validator>
     </property>
     <property name="Age">
       <validator type="blankchecker">
-        <param value="vocab" type="field"/>
+        <param type="field" value="vocab"/>
       </validator>
     </property>
     <property name="Sex">
       <validator type="blankchecker">
-        <param value="vocab" type="field"/>
+        <param type="field" value="vocab"/>
       </validator>
     </property>
     <property name="ID Pit Tag">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Colour Band">
       <validator type="blankchecker">
-        <param value="vocab" type="field"/>
+        <param type="field" value="vocab"/>
       </validator>
     </property>
     <property name="Comments">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Sample">
       <validator type="blankchecker">
-        <param value="vocab" type="field"/>
+        <param type="field" value="vocab"/>
       </validator>
     </property>
   </ArchaeologicalElement>
   <ArchaeologicalElement name="Measurements">
     <property name="Tarsus Length">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Head Length">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Bill Length">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Bill Height">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Wing Length">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Tail Length">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
     <property name="Mass">
       <validator type="blankchecker">
-        <param value="measure" type="field"/>
+        <param type="field" value="measure"/>
       </validator>
     </property>
   </ArchaeologicalElement>
