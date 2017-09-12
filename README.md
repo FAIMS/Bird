@@ -35,3 +35,22 @@ This module is part of the **FAIMS Demo library** on our publicly accessible Dem
 For more details about the **Griffith Ecology Lab** please visit https://griffithecology.com/. If you have any questions about the longitudinal monitoring of Bird nesting in NSW, please contact simon.griffith@mq.edu.au.
 
 If you have any questions about the module, please contact the FAIMS team at **enquiries@fedarch.org** and we will get back to you within one business day.
+
+<p align="left">
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133039.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133056.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133244.png" width="250"/>
+</p>
+
+<p align="left">
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133309.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133339.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133346.png" width="250"/>
+</p>
+
+<p align="left">
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133406.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133426.png" width="250"/>
+  <img src="https://github.com/FAIMS/bird-banding/blob/master/screenshots/Screenshot_20170912-133536.png" width="250"/>
+</p>
+
