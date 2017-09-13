@@ -24,7 +24,7 @@ This module is part of the **FAIMS Demo library** on our publicly accessible Dem
 * coordinates from internal GPS
 * validated fields with user observations
 * attribute-level timestamps
-* attaching photographs
+* photo capture from device camera
 * controlled vocabularies
 
 ## This module can be used with no or minor modification for:
