@@ -5,7 +5,7 @@ This module was created for the **Griffith Ecology Lab**, a research group based
 This module was co-developed by Simon C. Griffith at Macquarie University and Adela Sobotkova and Petra Janouchova at the FAIMS Project, Department of Ancient History, Macquarie University.
 
 ## Funding:
-Development of this module was funded by MQ Strategic Infrastructure Scheme 20110089 for FAIMS development in 2016 and the **Research Attraction and Acceleration Program (RAAP)** aimed to support innovation and investment in the New South Wales in 2016 and 2017.
+Development of this module was funded by MQ Strategic Infrastructure Scheme 20110089 for FAIMS development in 2016 and the **Research Attraction and Acceleration Program (RAAP) NSW Department of Industry 16805/00** aimed to support innovation and investment in the New South Wales in 2016 and 2017.
 
 
 ## Date of release:
